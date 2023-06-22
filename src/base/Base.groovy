@@ -1,4 +1,4 @@
-package kapil.base
+package base
 
 import java.util.UUID
 
