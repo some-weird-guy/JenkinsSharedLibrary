@@ -1,6 +1,6 @@
-package kapil.base
+package base
 
-import kapil.base.Base
+import base.Base
 
 class Repository extends Base{
     protected String url;
