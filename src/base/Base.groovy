@@ -1,20 +1,21 @@
-package base
+package kapil.base
 
 import java.util.UUID
+import java.time.LocalDateTime
 
 class Base implements Serializable {
     protected UUID id;
     protected def script; //WorkflowScript object
-    protected def jenkins; // jenkins : class jenkins.model.Jenkins (it is a singleton class)
+    protected def jenkins; // hudson.model.Hudson object
     protected String name;
 
-    Base(script, jenkins) {   
+    Base(script, jenkins) {   // jenkins : class jenkins.model.Jenkins (it is a singleton class)
         this.id = UUID.randomUUID();
         this.script = script;
         this.jenkins = jenkins
         this.name = "";
     }
-
+    //----------------------Getter & Setter methods------------------------------------
     public UUID getId() {
         return this.@id;
     }
@@ -36,14 +37,14 @@ class Base implements Serializable {
     public void setName(String name) {
         this.@name = name;
     }
-
+    //----------------------------------------------------------------------------
     public void jenkinsPrint(String log, int loglevel) {
-        log = "## [${java.time.LocalDateTime.now()}]: ${log}"
+        log = "##[${LocalDateTime.now()}]: ${log}"
         if (this.script != null) {
             this.script.echo(message: log);
         } else {
             println(log);
         }
     }
-    
+
 }
