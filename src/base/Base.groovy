@@ -38,6 +38,16 @@ class Base implements Serializable {
         this.@name = name;
     }
     //----------------------------------------------------------------------------
+    public void cleanWorkspace() {
+        this.jenkinsPrint("cleaning the workspace....", 3)
+        this.script.cleanWs(cleanWhenAborted: false,
+                            cleanWhenFailure: false,
+                            cleanWhenNotBuilt: false,
+                            cleanWhenSuccess: true,
+                            cleanWhenUnstable: false
+                            )
+    }
+    
     public void jenkinsPrint(String log, int loglevel) {
         log = "##[${LocalDateTime.now()}]: ${log}"
         if (this.script != null) {
