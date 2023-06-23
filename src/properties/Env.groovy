@@ -1,8 +1,12 @@
-package kapil.properties;
+package properties;
 
-import kapil.base.Base;
+import base.Base;
 
 class Env extends Base {
+    /* Example values for a item named "sample"
+     * workspacePath = '/var/lib/jenkins/workspace/practice3/sample'
+     * jobName = 'sample'
+    */
     protected String workspacePath;
     protected String jobName;
 
@@ -11,6 +15,19 @@ class Env extends Base {
 
         this.workspacePath = this.script.env.getProperty('WORKSPACE');
         this.jobName = this.script.env.getProperty('JOB_NAME')
+    }
+    //----------------------Getter & Setter methods------------------------------------
+    public String getWorkspacePath() {
+        return this.@workspacePath
+    }
+    public String getJobName() {
+        return this.@jobName
+    }
+    public void setWorkspacePath(String workspacePath) {
+        this.@workspacePath = workspacePath
+    }
+    public void setJobName(String jobName) {
+        this.@jobName= jobName
     }
 
 }
