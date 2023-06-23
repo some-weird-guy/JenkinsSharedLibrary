@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 class Base implements Serializable {
     protected UUID id;
     protected def script; //WorkflowScript object
-    protected def jenkins; // hudson.model.Hudson object
+    protected def jenkins; 
     protected String name;
 
     Base(script, jenkins) {   // jenkins : class jenkins.model.Jenkins (it is a singleton class)
