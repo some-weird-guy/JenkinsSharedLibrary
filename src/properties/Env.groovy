@@ -18,13 +18,13 @@ class Env extends Base {
     }
     //----------------------Getter & Setter methods------------------------------------
     public String getWorkspacePath() {
-        if(this.workspacePath){
+        if(!this.workspacePath){
             this.workspacePath = this.script.env.getProperty('WORKSPACE');
         }
         return this.@workspacePath
     }
     public String getJobName() {
-        if(this.jobName){
+        if(!this.jobName){
             this.jobName = this.script.env.getProperty('JOB_NAME')
         }
         return this.@jobName
