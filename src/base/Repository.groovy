@@ -62,7 +62,7 @@ class Repository extends Env {
             userRemoteConfigMap['credentialsId'] = this.credentials;
         }
 
-        this.PrintJenkins("cloning ${this.url} to ${this.getAbsoluteClonePath()}", 2)
+        this.jenkinsPrint("cloning ${this.url} to ${this.getAbsoluteClonePath()}", 2)
         this.script.dir(this.getAbsoluteClonePath()){
             this.script.checkout([$class: 'GitSCM',
                                   branches: [[name: this.branch]],
