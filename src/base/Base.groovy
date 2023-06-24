@@ -39,7 +39,7 @@ class Base implements Serializable {
     }
     //----------------------------------------------------------------------------
     public void cleanWorkspace() {
-        this.jenkinsPrint("cleaning the workspace....", 3)
+        this.jenkinsPrint("cleaning the workspace....", 2)
         this.script.cleanWs(cleanWhenAborted: false,
                             cleanWhenFailure: false,
                             cleanWhenNotBuilt: false,
