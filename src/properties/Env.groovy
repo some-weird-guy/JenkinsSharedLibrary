@@ -13,14 +13,20 @@ class Env extends Base {
     Env(script, jenkins){
         super(script, jenkins);
 
-        this.workspacePath = this.script.env.getProperty('WORKSPACE');
-        this.jobName = this.script.env.getProperty('JOB_NAME')
+        this.workspacePath = ""
+        this.jobName = ""
     }
     //----------------------Getter & Setter methods------------------------------------
     public String getWorkspacePath() {
+        if(this.workspacePath){
+            this.workspacePath = this.script.env.getProperty('WORKSPACE');
+        }
         return this.@workspacePath
     }
     public String getJobName() {
+        if(this.jobName){
+            this.jobName = this.script.env.getProperty('JOB_NAME')
+        }
         return this.@jobName
     }
     public void setWorkspacePath(String workspacePath) {
@@ -29,5 +35,6 @@ class Env extends Base {
     public void setJobName(String jobName) {
         this.@jobName= jobName
     }
+    public void setDefaults
 
 }
