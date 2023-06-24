@@ -52,7 +52,7 @@ class Repository extends Env {
     //----------------------------------------------------------------------------
 
     public String getAbsoluteClonePath() {
-        return this.workspacePath + "/" + this.clonePath
+        return this.getWorkspacePath() + "/" + this.getClonePath()
     }
 
     public void checkout(){ // currently, only support Git as SCM tool
