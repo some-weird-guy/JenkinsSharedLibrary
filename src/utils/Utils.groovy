@@ -8,7 +8,8 @@ class Utils {
     Utils() {
         this.jenkins = getJenkinsInstance()
     }
-
+    
+    @NonCPS
     def getJenkinsInstance() {
         return Jenkins.get()
     }
