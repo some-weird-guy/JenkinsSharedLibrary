@@ -1,6 +1,7 @@
 package base
 
 import properties.Env
+import utils.GenUtils
 
 class Repository extends Env {
     protected String url;
@@ -52,7 +53,9 @@ class Repository extends Env {
     //----------------------------------------------------------------------------
 
     public String getAbsoluteClonePath() {
-        return this.getWorkspacePath() + "/" + this.getClonePath()
+        String absoluteClonePath = this.getWorkspacePath() + "/" + this.getClonePath();
+        GenUtils.jenkinsPrint("Absolute clone path: ${absoluteClonePath}", 4)
+        return absoluteClonePath;
     }
 
     public void checkout(){ // currently, only support Git as SCM tool
@@ -62,7 +65,7 @@ class Repository extends Env {
             userRemoteConfigMap['credentialsId'] = this.credentials;
         }
 
-        this.jenkinsPrint("cloning ${this.url} to ${this.getAbsoluteClonePath()}", 2)
+        GenUtils.jenkinsPrint("cloning ${this.url} to ${this.getAbsoluteClonePath()}", 2)
         this.script.dir(this.getAbsoluteClonePath()){
             this.script.checkout([$class: 'GitSCM',
                                   branches: [[name: this.branch]],
