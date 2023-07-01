@@ -12,31 +12,31 @@ class Utils {
 
     Utils(script) {
         this.script = script
-        this.jenkins = this.getJenkinsInstance()
-        this.currentJobName = this.getCurrentJobName()
-        this.currentJobObj = this.getCurrentJobObj()
+        this.jenkins = this._getJenkinsInstance()
+        this.currentJobName = this._getCurrentJobName()
+        this.currentJobObj = this._getCurrentJobObj()
     }
 
     @NonCPS
-    public def getJenkinsInstance() {
+    public def _getJenkinsInstance() {
         return Jenkins.get()
     }
 
     @NonCPS
-    public String getCurrentJobName() {
+    public String _getCurrentJobName() {
         def currentJobName = this.script.env.getProperty('JOB_NAME')
         GenUtils.jenkinsPrint(this.script,"Current job name: ${currentJobName}",4)
         return currentJobName
     }
 
     @NonCPS
-    public def getItemByName(String name) {
+    public def _getItemByName(String name) {
         return this.jenkins.getItem(name)
     }
 
     @NonCPS
-    public def getCurrentJobObj() {
-        return this.getItemByName(this.currentJobName)
+    public def _getCurrentJobObj() {
+        return this._getItemByName(this.currentJobName)
     }
 
 
