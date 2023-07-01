@@ -10,8 +10,8 @@ class Env extends Base {
     protected String workspacePath;
     protected String jobName;
 
-    Env(script, jenkins){
-        super(script, jenkins);
+    Env(script){
+        super(script);
 
         this.workspacePath = ""
         this.jobName = ""
