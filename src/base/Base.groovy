@@ -35,11 +35,11 @@ class Base implements Serializable {
     public void cleanWorkspace() {
         GenUtils.jenkinsPrint(this.script,"cleaning the workspace....",2)
         this.script.cleanWs(cleanWhenAborted: false,
-                cleanWhenFailure: false,
-                cleanWhenNotBuilt: false,
-                cleanWhenSuccess: true,
-                cleanWhenUnstable: false
-        )
+                            cleanWhenFailure: false,
+                            cleanWhenNotBuilt: false,
+                            cleanWhenSuccess: true,
+                            cleanWhenUnstable: false
+                           )
     }
 
 }
