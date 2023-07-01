@@ -9,6 +9,7 @@ class Utils {
     def jenkins;
     String currentJobName; // Name of the current job
     def currentJobObj; // org.jenkinsci.plugins.workflow.job.WorkflowJob
+    def currentBuildObj;
 
     Utils(script) {
         this.script = script
