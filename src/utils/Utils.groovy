@@ -23,6 +23,11 @@ class Utils {
     public String getCurrentJobName() {
         return this.script.env.getProperty('JOB_NAME')
     }
+    
+    @NonCPS
+    public def getItemByName(String name) {
+        return this.jenkins.getItem(name)
+    }
 
 
 }
