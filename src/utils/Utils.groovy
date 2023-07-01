@@ -3,14 +3,22 @@ package utils
 import jenkins.model.Jenkins;
 class Utils {
 
-    protected def jenkins;
 
-    Utils() {
-        this.jenkins = getJenkinsInstance()
+    Utils(script) {
+        this.script = script
+        this.jenkins = this.getJenkinsInstance()
+        this.currentJobName = this.getCurrentJobName()
     }
-    
+
     @NonCPS
-    def getJenkinsInstance() {
+    public def getJenkinsInstance() {
         return Jenkins.get()
     }
+
+    @NonCPS
+    public String getCurrentJobName() {
+        return this.script.env.getProperty('JOB_NAME')
+    }
+
+
 }
