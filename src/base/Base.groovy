@@ -3,16 +3,16 @@ package base
 import java.util.UUID
 import java.time.LocalDateTime
 
+import utils.GenUtils
+
 class Base implements Serializable {
     protected UUID id;
     protected def script; //WorkflowScript object
-    protected def jenkins; 
     protected String name;
 
-    Base(script, jenkins) {   // jenkins : class jenkins.model.Jenkins (it is a singleton class)
+    Base(script) {
         this.id = UUID.randomUUID();
-        this.script = script;
-        this.jenkins = jenkins
+        this.script = script
         this.name = "";
     }
     //----------------------Getter & Setter methods------------------------------------
@@ -22,39 +22,24 @@ class Base implements Serializable {
     public def getScript() {
         return this.@script;
     }
-    public def getJenkins() {
-        return this.@jenkins;
-    }
     public String getName() {
         return this.@name;
     }
     public void setScript(script) {
         this.@script = script;
     }
-    public void setJenkins(jenkins) {
-        this.@jenkins = jenkins
-    }
     public void setName(String name) {
         this.@name = name;
     }
     //----------------------------------------------------------------------------
     public void cleanWorkspace() {
-        this.jenkinsPrint("cleaning the workspace....", 2)
+        GenUtils.jenkinsPrint("cleaning the workspace....", 2)
         this.script.cleanWs(cleanWhenAborted: false,
-                            cleanWhenFailure: false,
-                            cleanWhenNotBuilt: false,
-                            cleanWhenSuccess: true,
-                            cleanWhenUnstable: false
-                            )
-    }
-    
-    public void jenkinsPrint(String log, int loglevel) {
-        log = "##[${LocalDateTime.now()}]: ${log}"
-        if (this.script != null) {
-            this.script.echo(message: log);
-        } else {
-            println(log);
-        }
+                cleanWhenFailure: false,
+                cleanWhenNotBuilt: false,
+                cleanWhenSuccess: true,
+                cleanWhenUnstable: false
+        )
     }
 
 }
