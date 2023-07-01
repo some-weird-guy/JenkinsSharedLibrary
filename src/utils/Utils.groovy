@@ -54,12 +54,14 @@ class Utils {
         return this._getAllBuildsFromJob(this.currentJobObj)[0]
     }
     //-----------------------------------------------------------------
-    @NonCPS def _getAllCauseActions() {
-        def x = this.currentBuildObj.getActions(
+    @NonCPS 
+    def _getAllCauseActions() {
+        def causeActions = this.currentBuildObj.getActions(CauseAction.class)   
+        GenUtils.jenkinsPrint(this.script,"${causeActions}",4)
     }
     @NonCPS
     public def _getCurrentBuildCauses() {
-        
+      //  
     }
 
 
