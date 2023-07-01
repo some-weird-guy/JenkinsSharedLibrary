@@ -3,6 +3,7 @@ package utils
 import jenkins.model.Jenkins; // it is a singleton class
 import hudson.model.CauseAction
 import hudson.model.Action
+import hudson.model.Cause
 import utils.GenUtils
 
 class Utils {
@@ -61,6 +62,9 @@ class Utils {
         GenUtils.jenkinsPrint(this.script,"${causeActions}",4)
         for(Action a : causeActions){
             GenUtils.jenkinsPrint(this.script,"${a}",4)
+            for(Cause c : a.getCauses()){
+                GenUtils.jenkinsPrint(this.script,"${c}",4)
+            }
         }
         
     }
