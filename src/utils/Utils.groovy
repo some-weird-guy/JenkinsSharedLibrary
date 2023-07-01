@@ -1,6 +1,7 @@
 package utils
 
 import jenkins.model.Jenkins; // it is a singleton class
+import hudson.model.CauseAction
 import utils.GenUtils
 
 class Utils {
@@ -51,6 +52,14 @@ class Utils {
     @NonCPS
     public def _getCurrentBuildObj() {
         return this._getAllBuildsFromJob(this.currentJobObj)[0]
+    }
+    //-----------------------------------------------------------------
+    @NonCPS def _getAllCauseActions() {
+        def x = this.currentBuildObj.getActions(
+    }
+    @NonCPS
+    public def _getCurrentBuildCauses() {
+        
     }
 
 
