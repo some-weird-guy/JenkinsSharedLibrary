@@ -3,6 +3,10 @@ package utils
 import jenkins.model.Jenkins;
 class Utils {
 
+    def script;
+    def jenkins;
+    String currentJobName; // Name of the current job
+
 
     Utils(script) {
         this.script = script
