@@ -12,13 +12,13 @@ class Utils {
 
     Utils(script) {
         this.script = script
-        this.jenkins = this._getJenkinsInstance()
+        this.jenkins = this._getJenkins()
         this.currentJobName = this._getCurrentJobName()
         this.currentJobObj = this._getCurrentJobObj()
     }
 
     @NonCPS
-    public def _getJenkinsInstance() {
+    public def _getJenkins() {
         return Jenkins.get()
     }
 
