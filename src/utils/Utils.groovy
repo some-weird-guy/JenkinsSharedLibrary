@@ -15,6 +15,7 @@ class Utils {
         this.jenkins = this._getJenkins()
         this.currentJobName = this._getCurrentJobName()
         this.currentJobObj = this._getCurrentJobObj()
+        this.currentBuildObj = this._getCurrentBuildObj()
     }
 
     @NonCPS
@@ -39,6 +40,16 @@ class Utils {
     @NonCPS
     public def _getCurrentJobObj() {
         return this._getItemByName(this.currentJobName)
+    }
+
+    @NonCPS
+    public def _getAllBuildsFromJob(def jobObj) {
+        return jobObj.getBuilds()
+    }
+
+    @NonCPS
+    public def _getCurrentBuildObj() {
+        return this._getAllBuildsFromJob(this.currentJobObj)[0]
     }
 
 
