@@ -63,7 +63,7 @@ class Utils {
         for(Action a : causeActions){
             GenUtils.jenkinsPrint(this.script,"${a}",4)
             for(Cause c : a.getCauses()){
-                GenUtils.jenkinsPrint(this.script,"${c}",4)
+                GenUtils.jenkinsPrint(this.script,"${c.getShortDescription()}",4)
             }
         }
         
