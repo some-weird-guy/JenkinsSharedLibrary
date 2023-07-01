@@ -54,7 +54,7 @@ class Repository extends Env {
 
     public String getAbsoluteClonePath() {
         String absoluteClonePath = this.getWorkspacePath() + "/" + this.getClonePath();
-        GenUtils.jenkinsPrint("Absolute clone path: ${absoluteClonePath}", 4)
+        GenUtils.jenkinsPrint(this.script,"Absolute clone path: ${absoluteClonePath}",4)
         return absoluteClonePath;
     }
 
@@ -65,7 +65,7 @@ class Repository extends Env {
             userRemoteConfigMap['credentialsId'] = this.credentials;
         }
 
-        GenUtils.jenkinsPrint("cloning ${this.url} to ${this.getAbsoluteClonePath()}", 2)
+        GenUtils.jenkinsPrint(this.script,"cloning ${this.url} to ${this.getAbsoluteClonePath()}",2)
         this.script.dir(this.getAbsoluteClonePath()){
             this.script.checkout([$class: 'GitSCM',
                                   branches: [[name: this.branch]],
