@@ -1,17 +1,20 @@
 package utils
 
-import jenkins.model.Jenkins;
+import jenkins.model.Jenkins; // it is a singleton class
+import utils.GenUtils
+
 class Utils {
 
-    def script;
+    def script; // hudson.model.Hudson
     def jenkins;
     String currentJobName; // Name of the current job
-
+    def currentJobObj; // org.jenkinsci.plugins.workflow.job.WorkflowJob
 
     Utils(script) {
         this.script = script
         this.jenkins = this.getJenkinsInstance()
         this.currentJobName = this.getCurrentJobName()
+        this.currentJobObj = this.getCurrentJobObj()
     }
 
     @NonCPS
@@ -21,13 +24,23 @@ class Utils {
 
     @NonCPS
     public String getCurrentJobName() {
-        return this.script.env.getProperty('JOB_NAME')
+        def currentJobName = this.script.env.getProperty('JOB_NAME')
+        GenUtils.jenkinsPrint("Current job name: ${currentJobName}", 4)
+        return currentJobName
     }
-    
+
     @NonCPS
     public def getItemByName(String name) {
         return this.jenkins.getItem(name)
     }
+
+    @NonCPS
+    public def getCurrentJobObj() {
+        return this.getItemByName(this.currentJobName)
+    }
+
+
+
 
 
 }
