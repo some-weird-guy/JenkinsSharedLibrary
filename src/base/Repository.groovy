@@ -9,8 +9,8 @@ class Repository extends Env {
     protected String origin;
     protected String clonePath;
 
-    Repository(script, jenkins){
-        super(script, jenkins);
+    Repository(script){
+        super(script);
 
         this.url = "";
         this.credentials = "";
@@ -67,7 +67,7 @@ class Repository extends Env {
             this.script.checkout([$class: 'GitSCM',
                                   branches: [[name: this.branch]],
                                   userRemoteConfigs: [userRemoteConfigMap]
-                                 ]);
+            ]);
         }
 
     }
