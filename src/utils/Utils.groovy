@@ -25,9 +25,7 @@ class Utils {
     @NonCPS
     public String getCurrentJobName() {
         def currentJobName = this.script.env.getProperty('JOB_NAME')
-        echo("hi")
-        GenUtils.jenkinsPrint("Current job name: ${currentJobName}", 4)
-        println("hi2")
+        GenUtils.jenkinsPrint(this.script,"Current job name: ${currentJobName}",4)
         return currentJobName
     }
 
