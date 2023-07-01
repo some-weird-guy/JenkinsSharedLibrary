@@ -2,6 +2,7 @@ package utils
 
 import jenkins.model.Jenkins; // it is a singleton class
 import hudson.model.CauseAction
+import hudson.model.Action
 import utils.GenUtils
 
 class Utils {
@@ -56,8 +57,12 @@ class Utils {
     //-----------------------------------------------------------------
     @NonCPS 
     def _getAllCauseActions() {
-        def causeActions = this.currentBuildObj.getActions(CauseAction.class)   
+        def causeActions = this.currentBuildObj.getActions(CauseAction.class)
         GenUtils.jenkinsPrint(this.script,"${causeActions}",4)
+        for(Action a : causeActions){
+            GenUtils.jenkinsPrint(this.script,"${a}",4)
+        }
+        
     }
     @NonCPS
     public def _getCurrentBuildCauses() {
