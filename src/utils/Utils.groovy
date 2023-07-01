@@ -19,7 +19,9 @@ class Utils {
 
     @NonCPS
     public def _getJenkins() {
-        return Jenkins.get()
+        def jenkins =  Jenkins.getInstanceOrNull()
+        GenUtils.jenkinsPrint(this.script,"Jenkins singleton: ${jenkins}",4)
+        return jenkins
     }
 
     @NonCPS
