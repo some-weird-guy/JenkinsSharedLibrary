@@ -9,7 +9,7 @@ class GenUtils {
 
     @NonCPS
     public static void jenkinsPrint(String log, int loglevel) {
-        String log = "##[${LocalDateTime.now()}]: ${log}";
-        println(log);
+        String jenkinsLog = "##[${LocalDateTime.now()}]: ${log}";
+        println(jenkinsLog);
     }
 }
