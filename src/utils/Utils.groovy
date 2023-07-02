@@ -92,6 +92,7 @@ class Utils {
                         ],
                         _class : c.getClass(),
                         ShortDescription : c.getShortDescription(),
+                        ExternalizableId : _currentLevelbuildObj.getExternalizableId()
                         _primary : null,
                         _secondary : null
                 ]
