@@ -103,6 +103,7 @@ class Utils {
                             UpstreamBuild : c.getUpstreamBuild(),
                             UpSreamUrl : c.getUpstreamUrl()
                     ]
+                    this.causeList.add(causeMap);
                     
                 }
                 else if(UpstreamCause.class.isInstance(c)){
@@ -112,6 +113,7 @@ class Utils {
                             UpSreamUrl : c.getUpstreamUrl()
                     ]
                     _currentLevelbuildObj = c.getUpstreamRun()
+                    this.causeList.add(causeMap);
                     this._getAllCauses(_currentLevelbuildObj, currentLevelX + 1)
                 }
                 else if(UserIdCause.class.isInstance(c)){
@@ -120,6 +122,7 @@ class Utils {
                             UserName : c.getUserName(),
                             UserUrl : c.getUserUrl()
                     ]
+                    this.causeList.add(causeMap);
                 }
                 else if(ReplayCause.class.isInstance(c)){
                     // Replay Cause will always occur along with UserIdCause
@@ -127,9 +130,8 @@ class Utils {
                     causeMap["primary"] = [
                             OriginalNumber : c.getOriginalNumber()
                     ]
+                    this.causeList.add(causeMap);
                 }
-                this.causeList.add(causeMap);
-                GenUtils.jenkinsPrint(this.script,"${causeMap}",4);
                 currentLevelY = currentLevelY+1;
             }
             currentLevelZ = currentLevelZ + 1;
