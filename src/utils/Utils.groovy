@@ -129,6 +129,7 @@ class Utils {
                     ]
                 }
                 this.causeList.add(causeMap);
+                GenUtils.jenkinsPrint(this.script,"${causeMap}",4);
                 currentLevelY = currentLevelY+1;
             }
             currentLevelZ = currentLevelZ + 1;
