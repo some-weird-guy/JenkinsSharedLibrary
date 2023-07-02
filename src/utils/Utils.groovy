@@ -73,6 +73,7 @@ class Utils {
         return causeActions;
     }
 
+    @NonCPS
     public def _getAllCauses(def BuildObj, int currentLevelX) {
         def _currentLevelbuildObj = BuildObj;
         boolean deepestLevelReached = false;
