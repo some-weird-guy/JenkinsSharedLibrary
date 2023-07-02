@@ -1,11 +1,14 @@
 package utils
 
 import jenkins.model.Jenkins; // it is a singleton class
+//-------------------------------
 import hudson.model.CauseAction
 import hudson.model.Action
 import hudson.model.Cause
 import hudson.model.Cause.UpstreamCause
 import hudson.model.Cause.UserIdCause
+org.jenkinsci.plugins.workflow.cps.replay.ReplayCause
+//-------------------------------
 import utils.GenUtils
 
 class Utils {
@@ -98,6 +101,13 @@ class Utils {
                             UserId : c.getUserId(),
                             UserName : c.getUserName(),
                             UserUrl : c.getUserUrl()
+                        ]
+                        deepestLevelReached = true;
+                    }
+                    else if(ReplayCause.class.isInstance(c)){
+                        // Replay Cause will always occur along with UserIdCause
+                        causeMap["primary"] = [
+                            OriginalNumber : c.getOriginalNumber()
                         ]
                         deepestLevelReached = true;
                     }
