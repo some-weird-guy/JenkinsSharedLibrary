@@ -67,37 +67,42 @@ class Utils {
         return causeActions;
     }
     
-    public def _getAllCauses() {
+    public def _getAllCauses(def topLevelBuildObj) {
         // for now we are onlu supporting Upstream and UserId cause
-        def _currentLevelbuildObj = this.currentBuildObj;
+        def _currentLevelbuildObj = topLevelBuildObj;
         boolean deepestLevelReached = false;
+        int currentLevel = 0;
         // i am assuming that cause chain will be linear so storing causes in a list as map
         // deepest cause will in the last of list
         def causeList = []
         while(!deepestLevelReached){
             for(Action a : this._getAllCauseActions(_currentLevelbuildObj)){
                 for(Cause c : a.getCauses()){
+                    def causeMap = [
+                        level : currentLevel,
+                        primary : null,
+                        secondary : null
+                    ]
                     if(UpstreamCause.class.isInstance(c)){
-                        def causeMap = [
+                        causeMap["primary"] = [
                             ShortDescription : c.getShortDescription(),
                             UpStreamProject : c.getUpstreamProject(),
                             UpstreamBuild : c.getUpstreamBuild(),
                             UpSreamUrl : c.getUpstreamUrl()    
                         ]
-                        causeList.add(causeMap);
                         _currentLevelbuildObj = c.getUpstreamRun()
                     }
                     else if(UserIdCause.class.isInstance(c)){
-                        def causeMap = [
+                        causeMap["primary"] = [
                             ShortDescription : c.getShortDescription(),
                             UserId : c.getUserId(),
                             UserName : c.getUserName(),
                             UserUrl : c.getUserUrl()
                         ]
-                        causeList.add(causeMap)
                         deepestLevelReached = true;
                     }
-                    
+                    causeList.add(causeMap)
+                    currentLevel = currentLevel + 1;
                 }
             }  
         }
@@ -107,7 +112,7 @@ class Utils {
             
     @NonCPS
     public def _getCurrentBuildCauses() {
-      //  
+      return this._getAllCauses(this.currentBuildObj)
     }
 
 
