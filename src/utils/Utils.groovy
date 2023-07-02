@@ -20,6 +20,7 @@ class Utils {
     def currentJobObj; // org.jenkinsci.plugins.workflow.job.WorkflowJob
     def currentBuildObj;
     def causeList;
+    int causeDepthIndex;
 
     Utils(script) {
         this.script = script
@@ -28,6 +29,7 @@ class Utils {
         this.currentJobObj = this._getCurrentJobObj()
         this.currentBuildObj = this._getCurrentBuildObj()
         this.causeList = [];
+        this.causeDepthIndex = 1
     }
 
     @NonCPS
@@ -104,7 +106,10 @@ class Utils {
                             UpSreamUrl : c.getUpstreamUrl()
                     ]
                     this.causeList.add(causeMap); // this call is intentionally added to every cause to preserve the calling dfs order rather than actual dfs order
-                    
+                    if(this.causeDepthIndex){
+                        _currentLevelbuildObj = c.getUpstreamRun()
+                        this._getAllCauses(_currentLevelbuildObj, currentLevelX + 1)   
+                    }   
                 }
                 else if(UpstreamCause.class.isInstance(c)){
                     causeMap["_primary"] = [
@@ -112,9 +117,11 @@ class Utils {
                             UpstreamBuild : c.getUpstreamBuild(),
                             UpSreamUrl : c.getUpstreamUrl()
                     ]
-                    _currentLevelbuildObj = c.getUpstreamRun()
                     this.causeList.add(causeMap);
-                    this._getAllCauses(_currentLevelbuildObj, currentLevelX + 1)
+                    if(this.causeDepthIndex){
+                        _currentLevelbuildObj = c.getUpstreamRun()
+                        this._getAllCauses(_currentLevelbuildObj, currentLevelX + 1)   
+                    }
                 }
                 else if(UserIdCause.class.isInstance(c)){
                     causeMap["_primary"] = [
@@ -131,6 +138,10 @@ class Utils {
                             OriginalNumber : c.getOriginalNumber()
                     ]
                     this.causeList.add(causeMap);
+                    if(this.causeDepthIndex){
+                         _currentLevelbuildObj = c.getOriginal()
+                         this._getAllCauses(_currentLevelbuildObj, currentLevelX + 1)    
+                    }
                 }
                 currentLevelY = currentLevelY+1;
             }
