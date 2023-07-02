@@ -81,11 +81,12 @@ class Utils {
                     def causeMap = [
                         level : currentLevel,
                         primary : null,
-                        secondary : null
+                        secondary : [
+                            ShortDescription : c.getShortDescription()
+                        ]
                     ]
                     if(UpstreamCause.class.isInstance(c)){
                         causeMap["primary"] = [
-                            ShortDescription : c.getShortDescription(),
                             UpStreamProject : c.getUpstreamProject(),
                             UpstreamBuild : c.getUpstreamBuild(),
                             UpSreamUrl : c.getUpstreamUrl()    
@@ -94,7 +95,6 @@ class Utils {
                     }
                     else if(UserIdCause.class.isInstance(c)){
                         causeMap["primary"] = [
-                            ShortDescription : c.getShortDescription(),
                             UserId : c.getUserId(),
                             UserName : c.getUserName(),
                             UserUrl : c.getUserUrl()
