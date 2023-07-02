@@ -105,7 +105,7 @@ class Utils {
                     ]
                     
                 }
-                if(UpstreamCause.class.isInstance(c)){
+                else if(UpstreamCause.class.isInstance(c)){
                     causeMap["primary"] = [
                             UpStreamProject : c.getUpstreamProject(),
                             UpstreamBuild : c.getUpstreamBuild(),
