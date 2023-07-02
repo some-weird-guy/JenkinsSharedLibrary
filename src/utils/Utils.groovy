@@ -91,14 +91,15 @@ class Utils {
                                 Y : currentLevelY
                             ],
                             _class : c.getClass(),
+                            ShortDescription : c.getShortDescription(),
                             primary : null,
-                            secondary : [
-                                    ShortDescription : c.getShortDescription()
-                            ]
+                            secondary : null
                     ]
                     if(RebuildCause.class.isInstance(c)){
                         //  A cause specifying that the build was a rebuild of another build.
+                        // rebuild a parametrized build without entering the parameters again
                         // Extends UpstreamCause; that is why control statement of this cause is checked before Upstream cause
+                        // Rebuild Cause will always occur along with UserIdCause
                          causeMap["primary"] = [
                                 UpStreamProject : c.getUpstreamProject(),
                                 UpstreamBuild : c.getUpstreamBuild(),
