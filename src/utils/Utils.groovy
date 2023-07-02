@@ -66,7 +66,8 @@ class Utils {
         GenUtils.jenkinsPrint(this.script,"All cause actions object: ${causeActions}",4);
         return causeActions;
     }
-    def _getAllCauses() {
+    
+    public def _getAllCauses() {
         // for now we are onlu supporting Upstream and UserId cause
         def _currentLevelbuildObj = this.currentBuildObj;
         boolean deepestLevelReached = false;
@@ -98,9 +99,9 @@ class Utils {
                     }
                     
                 }
-            }
-            
-        } 
+            }  
+        }
+        return causeList;
     }
         
             
