@@ -8,6 +8,7 @@ import hudson.model.Cause
 import hudson.model.Cause.UpstreamCause
 import hudson.model.Cause.UserIdCause
 import org.jenkinsci.plugins.workflow.cps.replay.ReplayCause
+import com.sonyericsson.rebuild.RebuildCause
 //-------------------------------
 import utils.GenUtils
 
@@ -89,11 +90,22 @@ class Utils {
                                 X : currentLevelX,
                                 Y : currentLevelY
                             ],
+                            _class : c.getClass(),
                             primary : null,
                             secondary : [
                                     ShortDescription : c.getShortDescription()
                             ]
                     ]
+                    if(RebuildCause.class.isInstance(c)){
+                        //  A cause specifying that the build was a rebuild of another build.
+                        // Extends UpstreamCause; that is why control statement of this cause is checked before Upstream cause
+                         causeMap["primary"] = [
+                                UpStreamProject : c.getUpstreamProject(),
+                                UpstreamBuild : c.getUpstreamBuild(),
+                                UpSreamUrl : c.getUpstreamUrl()
+                        ]
+                        
+                    }
                     if(UpstreamCause.class.isInstance(c)){
                         causeMap["primary"] = [
                                 UpStreamProject : c.getUpstreamProject(),
