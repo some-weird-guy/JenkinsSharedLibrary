@@ -59,70 +59,78 @@ class Utils {
     @NonCPS
     public def _getCurrentBuildObj() {
         // return this.currentBuild.rawBuild()
-        
+
         return this._getAllBuildsFromJob(this.currentJobObj)[0];
     }
     //-----------------------------------------------------------------
-    @NonCPS 
+    @NonCPS
     def _getAllCauseActions(def buildObj) {
         def causeActions = buildObj.getActions(CauseAction.class);
         GenUtils.jenkinsPrint(this.script,"All cause actions object: ${causeActions}",4);
         return causeActions;
     }
-    
-    public def _getAllCauses(def topLevelBuildObj) {
+
+    public def _getAllCauses(def BuildObj) {
         // for now we are onlu supporting Upstream and UserId cause
-        def _currentLevelbuildObj = topLevelBuildObj;
+        def _currentLevelbuildObj = BuildObj;
         boolean deepestLevelReached = false;
-        int currentLevel = 0;
+        int currentLevelX = 0;
         // i am assuming that cause chain will be linear so storing causes in a list as map
         // deepest cause will in the last of list
         def causeList = []
         while(!deepestLevelReached){
+            int currentLevelZ = 0;
             for(Action a : this._getAllCauseActions(_currentLevelbuildObj)){
+                int currentLevelY = 0
                 for(Cause c : a.getCauses()){
                     def causeMap = [
-                        level : currentLevel,
-                        primary : null,
-                        secondary : [
-                            ShortDescription : c.getShortDescription()
-                        ]
+                            level : [
+                                Z : currentLevelZ,
+                                X : currentLevelX,
+                                Y : currentLevelY
+                            ],
+                            primary : null,
+                            secondary : [
+                                    ShortDescription : c.getShortDescription()
+                            ]
                     ]
                     if(UpstreamCause.class.isInstance(c)){
                         causeMap["primary"] = [
-                            UpStreamProject : c.getUpstreamProject(),
-                            UpstreamBuild : c.getUpstreamBuild(),
-                            UpSreamUrl : c.getUpstreamUrl()    
+                                UpStreamProject : c.getUpstreamProject(),
+                                UpstreamBuild : c.getUpstreamBuild(),
+                                UpSreamUrl : c.getUpstreamUrl()
                         ]
+                        currentLevelX = currentLevelX + 1;
                         _currentLevelbuildObj = c.getUpstreamRun()
                     }
                     else if(UserIdCause.class.isInstance(c)){
                         causeMap["primary"] = [
-                            UserId : c.getUserId(),
-                            UserName : c.getUserName(),
-                            UserUrl : c.getUserUrl()
+                                UserId : c.getUserId(),
+                                UserName : c.getUserName(),
+                                UserUrl : c.getUserUrl()
                         ]
                         deepestLevelReached = true;
                     }
                     else if(ReplayCause.class.isInstance(c)){
                         // Replay Cause will always occur along with UserIdCause
                         causeMap["primary"] = [
-                            OriginalNumber : c.getOriginalNumber()
+                                OriginalNumber : c.getOriginalNumber()
                         ]
                         deepestLevelReached = true;
                     }
-                    causeList.add(causeMap)
-                    currentLevel = currentLevel + 1;
+                    causeList.add(causeMap);
+                    currentLevelY = currentLevelY+1;
                 }
-            }  
+                currentLevelZ = currentLevelZ + 1;
+            }
         }
         return causeList;
     }
-        
-            
+
+
     @NonCPS
     public def _getCurrentBuildCauses() {
-      return this._getAllCauses(this.currentBuildObj)
+        return this._getAllCauses(this.currentBuildObj)
     }
 
 
