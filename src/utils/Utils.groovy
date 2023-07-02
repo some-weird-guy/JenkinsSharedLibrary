@@ -7,6 +7,8 @@ import hudson.model.Action
 import hudson.model.Cause
 import hudson.model.Cause.UpstreamCause
 import hudson.model.Cause.UserIdCause
+import hudson.triggers.SCMTrigger.SCMTriggerCause
+import hudson.triggers.TimerTrigger.TimerTriggerCause
 import org.jenkinsci.plugins.workflow.cps.replay.ReplayCause
 import com.sonyericsson.rebuild.RebuildCause
 //-------------------------------
@@ -78,6 +80,7 @@ class Utils {
     @NonCPS
     public def _getAllCauses(def BuildObj, int currentLevelX) {
         def _currentLevelbuildObj = BuildObj;
+        def _nextLevelbuildObj = null; // do not take this variable seriously
         boolean deepestLevelReached = false;
         // deepest cause will in the last of list
         int currentLevelZ = 0;
@@ -143,6 +146,12 @@ class Utils {
                          _nextLevelbuildObj = c.getOriginal();
                          this._getAllCauses(_nextLevelbuildObj, currentLevelX + 1)    
                     }
+                }
+                else if(SCMTriggerCause.class.isInstance(c)){
+                    this.causeList.add(causeMap);
+                }
+                else if(TimerTriggerCause.class.isInstance(c)){
+                    this.causeList.add(causeMap);
                 }
                 currentLevelY = currentLevelY+1;
             }
