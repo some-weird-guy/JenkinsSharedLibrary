@@ -103,7 +103,7 @@ class Utils {
                             UpstreamBuild : c.getUpstreamBuild(),
                             UpSreamUrl : c.getUpstreamUrl()
                     ]
-                    this.causeList.add(causeMap);
+                    this.causeList.add(causeMap); // this call is intentionally added to every cause to preserve the calling dfs order rather than actual dfs order
                     
                 }
                 else if(UpstreamCause.class.isInstance(c)){
