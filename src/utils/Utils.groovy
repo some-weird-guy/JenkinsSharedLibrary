@@ -83,22 +83,22 @@ class Utils {
             int currentLevelY = 0
             for(Cause c : a.getCauses()){
                 def causeMap = [
-                        level : [
+                        _level : [
                             Z : currentLevelZ,
                             X : currentLevelX,
                             Y : currentLevelY
                         ],
                         _class : c.getClass(),
                         ShortDescription : c.getShortDescription(),
-                        primary : null,
-                        secondary : null
+                        _primary : null,
+                        _secondary : null
                 ]
                 if(RebuildCause.class.isInstance(c)){
                     //  A cause specifying that the build was a rebuild of another build.
                     // rebuild a parametrized build without entering the parameters again
                     // Extends UpstreamCause; that is why control statement of this cause is checked before Upstream cause
                     // Rebuild Cause will always occur along with UserIdCause
-                     causeMap["primary"] = [
+                     causeMap["_primary"] = [
                             UpStreamProject : c.getUpstreamProject(),
                             UpstreamBuild : c.getUpstreamBuild(),
                             UpSreamUrl : c.getUpstreamUrl()
@@ -107,7 +107,7 @@ class Utils {
                     
                 }
                 else if(UpstreamCause.class.isInstance(c)){
-                    causeMap["primary"] = [
+                    causeMap["_primary"] = [
                             UpStreamProject : c.getUpstreamProject(),
                             UpstreamBuild : c.getUpstreamBuild(),
                             UpSreamUrl : c.getUpstreamUrl()
@@ -117,7 +117,7 @@ class Utils {
                     this._getAllCauses(_currentLevelbuildObj, currentLevelX + 1)
                 }
                 else if(UserIdCause.class.isInstance(c)){
-                    causeMap["primary"] = [
+                    causeMap["_primary"] = [
                             UserId : c.getUserId(),
                             UserName : c.getUserName(),
                             UserUrl : c.getUserUrl()
@@ -127,7 +127,7 @@ class Utils {
                 else if(ReplayCause.class.isInstance(c)){
                     // Replay Cause will always occur along with UserIdCause
                     // Allows you to replay a Pipeline build with a modified script.
-                    causeMap["primary"] = [
+                    causeMap["_primary"] = [
                             OriginalNumber : c.getOriginalNumber()
                     ]
                     this.causeList.add(causeMap);
