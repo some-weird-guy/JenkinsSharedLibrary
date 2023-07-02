@@ -19,6 +19,7 @@ class Utils {
     String currentJobName; // Name of the current job
     def currentJobObj; // org.jenkinsci.plugins.workflow.job.WorkflowJob
     def currentBuildObj;
+    def causeList;
 
     Utils(script) {
         this.script = script
@@ -26,6 +27,7 @@ class Utils {
         this.currentJobName = this._getCurrentJobName()
         this.currentJobObj = this._getCurrentJobObj()
         this.currentBuildObj = this._getCurrentBuildObj()
+        this.causeList = [];
     }
 
     @NonCPS
@@ -71,80 +73,72 @@ class Utils {
         return causeActions;
     }
 
-    public def _getAllCauses(def BuildObj) {
-        // for now we are onlu supporting Upstream and UserId cause
+    public def _getAllCauses(def BuildObj, int currentLevelX) {
         def _currentLevelbuildObj = BuildObj;
         boolean deepestLevelReached = false;
-        int currentLevelX = 0;
-        // i am assuming that cause chain will be linear so storing causes in a list as map
         // deepest cause will in the last of list
-        def causeList = []
-        while(!deepestLevelReached){
-            int currentLevelZ = 0;
-            for(Action a : this._getAllCauseActions(_currentLevelbuildObj)){
-                int currentLevelY = 0
-                for(Cause c : a.getCauses()){
-                    def causeMap = [
-                            level : [
-                                Z : currentLevelZ,
-                                X : currentLevelX,
-                                Y : currentLevelY
-                            ],
-                            _class : c.getClass(),
-                            ShortDescription : c.getShortDescription(),
-                            primary : null,
-                            secondary : null
+        int currentLevelZ = 0;
+        for(Action a : this._getAllCauseActions(_currentLevelbuildObj)){
+            int currentLevelY = 0
+            for(Cause c : a.getCauses()){
+                def causeMap = [
+                        level : [
+                            Z : currentLevelZ,
+                            X : currentLevelX,
+                            Y : currentLevelY
+                        ],
+                        _class : c.getClass(),
+                        ShortDescription : c.getShortDescription(),
+                        primary : null,
+                        secondary : null
+                ]
+                if(RebuildCause.class.isInstance(c)){
+                    //  A cause specifying that the build was a rebuild of another build.
+                    // rebuild a parametrized build without entering the parameters again
+                    // Extends UpstreamCause; that is why control statement of this cause is checked before Upstream cause
+                    // Rebuild Cause will always occur along with UserIdCause
+                     causeMap["primary"] = [
+                            UpStreamProject : c.getUpstreamProject(),
+                            UpstreamBuild : c.getUpstreamBuild(),
+                            UpSreamUrl : c.getUpstreamUrl()
                     ]
-                    if(RebuildCause.class.isInstance(c)){
-                        //  A cause specifying that the build was a rebuild of another build.
-                        // rebuild a parametrized build without entering the parameters again
-                        // Extends UpstreamCause; that is why control statement of this cause is checked before Upstream cause
-                        // Rebuild Cause will always occur along with UserIdCause
-                         causeMap["primary"] = [
-                                UpStreamProject : c.getUpstreamProject(),
-                                UpstreamBuild : c.getUpstreamBuild(),
-                                UpSreamUrl : c.getUpstreamUrl()
-                        ]
-                        
-                    }
-                    if(UpstreamCause.class.isInstance(c)){
-                        causeMap["primary"] = [
-                                UpStreamProject : c.getUpstreamProject(),
-                                UpstreamBuild : c.getUpstreamBuild(),
-                                UpSreamUrl : c.getUpstreamUrl()
-                        ]
-                        currentLevelX = currentLevelX + 1;
-                        _currentLevelbuildObj = c.getUpstreamRun()
-                    }
-                    else if(UserIdCause.class.isInstance(c)){
-                        causeMap["primary"] = [
-                                UserId : c.getUserId(),
-                                UserName : c.getUserName(),
-                                UserUrl : c.getUserUrl()
-                        ]
-                        deepestLevelReached = true;
-                    }
-                    else if(ReplayCause.class.isInstance(c)){
-                        // Replay Cause will always occur along with UserIdCause
-                        // Allows you to replay a Pipeline build with a modified script.
-                        causeMap["primary"] = [
-                                OriginalNumber : c.getOriginalNumber()
-                        ]
-                        deepestLevelReached = true;
-                    }
-                    causeList.add(causeMap);
-                    currentLevelY = currentLevelY+1;
+                    
                 }
-                currentLevelZ = currentLevelZ + 1;
+                if(UpstreamCause.class.isInstance(c)){
+                    causeMap["primary"] = [
+                            UpStreamProject : c.getUpstreamProject(),
+                            UpstreamBuild : c.getUpstreamBuild(),
+                            UpSreamUrl : c.getUpstreamUrl()
+                    ]
+                    _currentLevelbuildObj = c.getUpstreamRun()
+                    this._getAllCauses(_currentLevelbuildObj, currentLevelX + 1;)
+                }
+                else if(UserIdCause.class.isInstance(c)){
+                    causeMap["primary"] = [
+                            UserId : c.getUserId(),
+                            UserName : c.getUserName(),
+                            UserUrl : c.getUserUrl()
+                    ]
+                }
+                else if(ReplayCause.class.isInstance(c)){
+                    // Replay Cause will always occur along with UserIdCause
+                    // Allows you to replay a Pipeline build with a modified script.
+                    causeMap["primary"] = [
+                            OriginalNumber : c.getOriginalNumber()
+                    ]
+                }
+                this.causeList.add(causeMap);
+                currentLevelY = currentLevelY+1;
             }
+            currentLevelZ = currentLevelZ + 1;
         }
-        return causeList;
     }
 
 
     @NonCPS
     public def _getCurrentBuildCauses() {
-        return this._getAllCauses(this.currentBuildObj)
+        this._getAllCauses(this.currentBuildObj, 0)
+        return this.causeList;
     }
 
 
