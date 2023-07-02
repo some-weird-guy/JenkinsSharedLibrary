@@ -113,6 +113,7 @@ class Utils {
                     }
                     else if(ReplayCause.class.isInstance(c)){
                         // Replay Cause will always occur along with UserIdCause
+                        // Allows you to replay a Pipeline build with a modified script.
                         causeMap["primary"] = [
                                 OriginalNumber : c.getOriginalNumber()
                         ]
