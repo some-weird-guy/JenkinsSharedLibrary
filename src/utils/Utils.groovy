@@ -25,7 +25,7 @@ class Utils {
     @NonCPS
     public def _getJenkins() {
         def jenkins =  Jenkins.getInstanceOrNull()
-        GenUtils.jenkinsPrint(this.script,"Jenkins singleton: ${jenkins}",4)
+        GenUtils.jenkinsPrint(this.script,"Jenkins singleton object: ${jenkins}",4)
         return jenkins
     }
 
@@ -53,21 +53,55 @@ class Utils {
 
     @NonCPS
     public def _getCurrentBuildObj() {
-        return this._getAllBuildsFromJob(this.currentJobObj)[0]
+        // return this.currentBuild.rawBuild()
+        
+        return this._getAllBuildsFromJob(this.currentJobObj)[0];
     }
     //-----------------------------------------------------------------
     @NonCPS 
-    def _getAllCauseActions() {
-        def causeActions = this.currentBuildObj.getActions(CauseAction.class)
-        GenUtils.jenkinsPrint(this.script,"${causeActions}",4)
-        for(Action a : causeActions){
-            GenUtils.jenkinsPrint(this.script,"${a}",4)
-            for(Cause c : a.getCauses()){
-                GenUtils.jenkinsPrint(this.script,"${c.getShortDescription()}",4)
-            }
-        }
-        
+    def _getAllCauseActions(def buildObj) {
+        def causeActions = buildObj.getActions(CauseAction.class);
+        GenUtils.jenkinsPrint(this.script,"All cause actions object: ${causeActions}",4);
+        return causeActions;
     }
+    def _getAllCauses() {
+        // for now we are onlu supporting Upstream and UserId cause
+        def _currentLevelbuildObj = this.currentBuildObj;
+        boolean deepestLevelReached = false;
+        // i am assuming that cause chain will be linear so storing causes in a list as map
+        // deepest cause will in the last of list
+        def causeList = []
+        while(!deepestLevelReached){
+            for(Action a : this._getAllCauseActions(_currentLevelbuildObj)){
+                for(Cause c : a.getCauses()){
+                    if(UpstreamCause.class.isInstance(c)){
+                        def causeMap = [
+                            ShortDescription : c.getShortDescription(),
+                            UpStreamProject : c.getUpstreamProject(),
+                            UpstreamBuild : c.getUpstreamBuild(),
+                            UpSreamUrl : c.getUpstreamUrl()    
+                        ]
+                        causeList.add(causeMap);
+                        _currentLevelbuildObj = c.getUpstreamRun()
+                    }
+                    else if(UserIdCause.class.isInstance(c)){
+                        def causeMap = [
+                            ShortDescription : c.getShortDescription(),
+                            UserId : c.getUserId(),
+                            UserName : c.getUserName(),
+                            UserUrl : c.getUserUrl()
+                        ]
+                        causeList.add(causeMap)
+                        deepestLevelReached = true;
+                    }
+                    
+                }
+            }
+            
+        } 
+    }
+        
+            
     @NonCPS
     public def _getCurrentBuildCauses() {
       //  
