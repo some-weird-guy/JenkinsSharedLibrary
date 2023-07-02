@@ -111,7 +111,7 @@ class Utils {
                             UpSreamUrl : c.getUpstreamUrl()
                     ]
                     _currentLevelbuildObj = c.getUpstreamRun()
-                    this._getAllCauses(_currentLevelbuildObj, currentLevelX + 1;)
+                    this._getAllCauses(_currentLevelbuildObj, currentLevelX + 1)
                 }
                 else if(UserIdCause.class.isInstance(c)){
                     causeMap["primary"] = [
