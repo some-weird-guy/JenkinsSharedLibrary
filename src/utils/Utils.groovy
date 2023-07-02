@@ -108,7 +108,8 @@ class Utils {
                     ]
                     this.causeList.add(causeMap); // this call is intentionally added to every cause to preserve the calling dfs order rather than actual dfs order
                     if(this.causeDepthIndex){
-                        this._getAllCauses(c.getUpstreamRun(), currentLevelX + 1)   
+                        _nextLevelbuildObj = c.getUpstreamRun();
+                        this._getAllCauses(_nextLevelbuildObj, currentLevelX + 1)   
                     }   
                 }
                 else if(UpstreamCause.class.isInstance(c)){
@@ -119,7 +120,8 @@ class Utils {
                     ]
                     this.causeList.add(causeMap);
                     if(this.causeDepthIndex){
-                        this._getAllCauses(c.getUpstreamRun(), currentLevelX + 1)   
+                        _nextLevelbuildObj = c.getUpstreamRun();
+                        this._getAllCauses(_nextLevelbuildObj, currentLevelX + 1)   
                     }
                 }
                 else if(UserIdCause.class.isInstance(c)){
@@ -138,7 +140,8 @@ class Utils {
                     ]
                     this.causeList.add(causeMap);
                     if(this.causeDepthIndex){
-                         this._getAllCauses(c.getOriginal(), currentLevelX + 1)    
+                         _nextLevelbuildObj = c.getOriginal();
+                         this._getAllCauses(_nextLevelbuildObj, currentLevelX + 1)    
                     }
                 }
                 currentLevelY = currentLevelY+1;
