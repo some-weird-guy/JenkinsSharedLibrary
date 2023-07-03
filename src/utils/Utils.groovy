@@ -79,12 +79,12 @@ class Utils {
 
     @NonCPS
     public def _getAllCauses(def BuildObj, int currentLevelX) {
-        def _currentLevelbuildObj = BuildObj;
-        def _nextLevelbuildObj = null; // do not take this variable seriously
+        def __currentLevelbuildObj = BuildObj;
+        def __nextLevelbuildObj = null; // do not take this variable seriously
         boolean deepestLevelReached = false;
         // deepest cause will in the last of list
         int currentLevelZ = 0;
-        for(Action a : this._getAllCauseActions(_currentLevelbuildObj)){
+        for(Action a : this._getAllCauseActions(__currentLevelbuildObj)){
             int currentLevelY = 0
             for(Cause c : a.getCauses()){
                 def causeMap = [
@@ -95,7 +95,7 @@ class Utils {
                         ],
                         _class : c.getClass(),
                         ShortDescription : c.getShortDescription(),
-                        ExternalizableId : _currentLevelbuildObj.getExternalizableId(),
+                        ExternalizableId : __currentLevelbuildObj.getExternalizableId(),
                         _primary : null,
                         _secondary : null
                 ]
@@ -111,8 +111,8 @@ class Utils {
                     ]
                     this.causeList.add(causeMap); // this call is intentionally added to every cause to preserve the calling dfs order rather than actual dfs order
                     if(this.causeDepthIndex){
-                        _nextLevelbuildObj = c.getUpstreamRun();
-                        this._getAllCauses(_nextLevelbuildObj, currentLevelX + 1)   
+                        __nextLevelbuildObj = c.getUpstreamRun();
+                        this._getAllCauses(__nextLevelbuildObj, currentLevelX + 1)   
                     }   
                 }
                 else if(UpstreamCause.class.isInstance(c)){
@@ -123,8 +123,8 @@ class Utils {
                     ]
                     this.causeList.add(causeMap);
                     if(this.causeDepthIndex){
-                        _nextLevelbuildObj = c.getUpstreamRun();
-                        this._getAllCauses(_nextLevelbuildObj, currentLevelX + 1)   
+                        __nextLevelbuildObj = c.getUpstreamRun();
+                        this._getAllCauses(__nextLevelbuildObj, currentLevelX + 1)   
                     }
                 }
                 else if(UserIdCause.class.isInstance(c)){
@@ -143,8 +143,8 @@ class Utils {
                     ]
                     this.causeList.add(causeMap);
                     if(this.causeDepthIndex){
-                         _nextLevelbuildObj = c.getOriginal();
-                         this._getAllCauses(_nextLevelbuildObj, currentLevelX + 1)    
+                         __nextLevelbuildObj = c.getOriginal();
+                         this._getAllCauses(__nextLevelbuildObj, currentLevelX + 1)    
                     }
                 }
                 else if(SCMTriggerCause.class.isInstance(c)){
