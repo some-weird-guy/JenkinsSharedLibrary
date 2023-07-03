@@ -171,7 +171,7 @@ class Utils {
         return this.causeList;
     }
     //----------------------------Mail Handling-------------------------------------
-
+    @NonCPS
     public def _getUserEmailFromUserId(String userId) {
         def userObj = _getUserObjFromUserId(userId);
         def mailUserPropertyObj = userObj.getProperty(Mailer.UserProperty.class);
@@ -184,6 +184,7 @@ class Utils {
         
     }
     //----------------------------User Handling-------------------------------------
+    @NonCPS
     public def _getUserObjFromUserId(String userId) {
         return User.get(userId)
     }
