@@ -101,7 +101,7 @@ class Utils {
                         _ExternalizableId : __currentLevelbuildObj.getExternalizableId(),
                         _parentCauseExternalizableId : ((__previousLevelbuildObj == null) ? null : __previousLevelbuildObj.getExternalizableId()),
                         _primary : null,
-                        _secondary : null
+                        _secondary : [:]
                 ]
                 if(RebuildCause.class.isInstance(c)){
                     //  A cause specifying that the build was a rebuild of another build.
@@ -137,7 +137,7 @@ class Utils {
                             UserName : c.getUserName(),
                             UserUrl : c.getUserUrl()
                     ]
-                    causeMap["_secondary"] = this._getUserEmailFromUserId(c.getUserId())
+                    causeMap["_secondary"]["Mail"] = this._getUsermailFromUserId(c.getUserId())
                     this.causeList.add(causeMap);
                 }
                 else if(ReplayCause.class.isInstance(c)){
@@ -172,7 +172,7 @@ class Utils {
     }
     //----------------------------Mail Handling-------------------------------------
     @NonCPS
-    public def _getUserEmailFromUserId(String userId) {
+    public def _getUsermailFromUserId(String userId) {
         def userObj = _getUserObjFromUserId(userId);
         def mailUserPropertyObj = userObj.getProperty(Mailer.UserProperty.class);
         if(mailUserPropertyObj.hasExplicitlyConfiguredAddress()){
