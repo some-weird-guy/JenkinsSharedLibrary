@@ -176,10 +176,10 @@ class Utils {
         def userObj = _getUserObjFromUserId(userId);
         def mailUserPropertyObj = userObj.getProperty(Mailer.UserProperty.class);
         if(mailUserPropertyObj.hasExplicitlyConfiguredAddress()){
-            mailUserPropertyObj.getExplicitlyConfiguredAddress();
+            return mailUserPropertyObj.getExplicitlyConfiguredAddress();
         }
         else{
-            mailUserPropertyObj.getAddress();
+            return mailUserPropertyObj.getAddress();
         }
         
     }
