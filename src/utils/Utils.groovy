@@ -95,8 +95,8 @@ class Utils {
                         ],
                         _class : c.getClass(),
                         ShortDescription : c.getShortDescription(),
-                        ExternalizableId : __currentLevelbuildObj.getExternalizableId(),
-                        _parentCauseExternalizableId : __previousLevelbuildObj.getExternalizableId(),
+                        _ExternalizableId : __currentLevelbuildObj.getExternalizableId(),
+                        _parentCauseExternalizableId : ((__previousLevelbuildObj == null) ? null : __previousLevelbuildObj.getExternalizableId()),
                         _primary : null,
                         _secondary : null
                 ]
