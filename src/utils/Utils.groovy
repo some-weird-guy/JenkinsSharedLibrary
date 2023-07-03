@@ -12,6 +12,9 @@ import hudson.triggers.TimerTrigger.TimerTriggerCause
 import org.jenkinsci.plugins.workflow.cps.replay.ReplayCause
 import com.sonyericsson.rebuild.RebuildCause
 //-------------------------------
+import hudson.tasks.Mailer
+import hudson.model.User
+//-------------------------------
 import utils.GenUtils
 
 class Utils {
@@ -69,7 +72,7 @@ class Utils {
 
         return this._getAllBuildsFromJob(this.currentJobObj)[0];
     }
-    //-----------------------------------------------------------------
+    //----------------------------Cause Handling-------------------------------------
     @NonCPS
     def _getAllCauseActions(def buildObj) {
         def causeActions = buildObj.getActions(CauseAction.class);
@@ -134,6 +137,7 @@ class Utils {
                             UserName : c.getUserName(),
                             UserUrl : c.getUserUrl()
                     ]
+                    causeMap["_secondary"] = this._getUserEmailFromUserId(c.getUserId())
                     this.causeList.add(causeMap);
                 }
                 else if(ReplayCause.class.isInstance(c)){
@@ -166,8 +170,23 @@ class Utils {
         this._getAllCauses(this.currentBuildObj, 0, null)
         return this.causeList;
     }
+    //----------------------------Mail Handling-------------------------------------
 
-
+    public def _getUserEmailFromUserId(String userId) {
+        def userObj = _getUserObjFromUserId(userId);
+        def mailUserPropertyObj = userObj.getProperty(Mailer.UserProperty.class);
+        if(mailUserPropertyObj.hasExplicitlyConfiguredAddress()){
+            mailUserPropertyObj.getExplicitlyConfiguredAddress();
+        }
+        else{
+            mailUserPropertyObj.getAddress();
+        }
+        
+    }
+    //----------------------------User Handling-------------------------------------
+    public def _getUserObjFromUserId(String userId) {
+        return User.get(userId)
+    }
 
 
 
