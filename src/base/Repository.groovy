@@ -69,6 +69,8 @@ class Repository extends Env {
         this.script.dir(this.getAbsoluteClonePath()){
             this.script.checkout([$class: 'GitSCM',
                                   branches: [[name: this.branch]],
+                                  doGenerateSubmoduleConfigurations: false,
+                                  submoduleCfg: [],
                                   userRemoteConfigs: [userRemoteConfigMap]
             ]);
         }
