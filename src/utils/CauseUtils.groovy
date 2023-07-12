@@ -1,0 +1,39 @@
+import hudson.model.Cause
+import hudson.model.Cause.UserIdCause
+import com.sonyericsson.rebuild.RebuildCause
+import org.jenkinsci.plugins.workflow.cps.replay.ReplayCause
+import hudson.model.Cause.UpstreamCause
+import hudson.triggers.SCMTrigger.SCMTriggerCause
+import hudson.triggers.TimerTrigger.TimerTriggerCause
+
+
+
+
+class CauseUtils {
+  def buildObj;
+
+  def causeTypes = [0 : 'class hudson.model.Cause$UserIdCause',
+                    1 : 'class com.sonyericsson.rebuild.RebuildCause',
+                    2 : 'class org.jenkinsci.plugins.workflow.cps.replay.ReplayCause',
+                    3 : 'class hudson.model.Cause$UpstreamCause']
+
+  CauseUtils(def buildObj) {
+    this.buildObj = buildObj;
+  }
+
+  @NonCPS
+  def _getCauseActionsFromBuildObj(def buildObj) {
+      def causeActions = buildObj.getActions(CauseAction.class);
+      GenUtils.jenkinsPrint(this.script," Cause actions object: ${causeActions} of build object: ${builfObj}",4);
+      return causeActions;
+  }
+
+  @NonCPS
+  def _getBuildCausesFromBuildObj(def buildObj) {
+    
+  }
+  
+  
+
+  
+}
