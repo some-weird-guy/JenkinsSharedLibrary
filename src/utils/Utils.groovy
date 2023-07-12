@@ -69,7 +69,6 @@ class Utils {
     @NonCPS
     public def _getCurrentBuildObj() {
         // return this.currentBuild.rawBuild()
-
         return this._getAllBuildsFromJob(this.currentJobObj)[0];
     }
     //----------------------------Cause Handling-------------------------------------
@@ -100,6 +99,7 @@ class Utils {
                         ShortDescription : c.getShortDescription(),
                         _ExternalizableId : __currentLevelbuildObj.getExternalizableId(),
                         _parentCauseExternalizableId : ((__previousLevelbuildObj == null) ? null : __previousLevelbuildObj.getExternalizableId()),
+                        _parentCauseObjHashCode : c.hashCode(),
                         _primary : null,
                         _secondary : [:]
                 ]
