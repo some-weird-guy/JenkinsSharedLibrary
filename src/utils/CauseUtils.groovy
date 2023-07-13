@@ -17,7 +17,8 @@ class CauseUtils {
                     2 : 'class org.jenkinsci.plugins.workflow.cps.replay.ReplayCause',
                     3 : 'class hudson.model.Cause$UpstreamCause']
 
-  CauseUtils(def buildObj) {
+  CauseUtils(def script, def buildObj) {
+    this.script = script;
     this.buildObj = buildObj;
   }
 
@@ -29,7 +30,14 @@ class CauseUtils {
   }
 
   @NonCPS
-  def _getBuildCausesFromBuildObj(def buildObj) {
+  def _getBuildCausesFromBuildObj(def buildObj, def filter) {
+
+    for(Action a : this._getCauseActionFromBuildObj()) {
+      for(Cause c : a.getCauses()) {
+        
+        
+      }
+    }
     
   }
   
