@@ -31,10 +31,22 @@ class CauseUtils {
 
   @NonCPS
   def _getBuildCausesFromBuildObj(def buildObj, def filter) {
+    /* cause tree 
+
+    [1]every build have associated causes
+    [2] not every build have  
+    */
 
     for(Action a : this._getCauseActionFromBuildObj()) {
       for(Cause c : a.getCauses()) {
-        
+        def causeDetails = [
+          __causeClass : c.getClass(),
+          __buildExternalizableId : __currentLevelbuildObj.getExternalizableId()
+          ShortDescription : c.getShortDescription(),
+          _primary : null,
+          _secondary : [:],
+          
+        ];
         
       }
     }
