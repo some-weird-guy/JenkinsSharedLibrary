@@ -12,10 +12,10 @@ import hudson.triggers.TimerTrigger.TimerTriggerCause
 class CauseUtils {
   def buildObj;
 
-  def causeTypes = [0 : 'class hudson.model.Cause$UserIdCause',
-                    1 : 'class com.sonyericsson.rebuild.RebuildCause',
-                    2 : 'class org.jenkinsci.plugins.workflow.cps.replay.ReplayCause',
-                    3 : 'class hudson.model.Cause$UpstreamCause']
+  def causeTypes = [0 : [_class : 'class hudson.model.Cause$UserIdCause', associatedCauses : [], haveAssociatedBuild : false],
+                    1 : [_class : 'class com.sonyericsson.rebuild.RebuildCause', associatedCauses : [0], haveAssociatedBuild : true],
+                    2 : [_class : 'class org.jenkinsci.plugins.workflow.cps.replay.ReplayCause', associatedCauses : [0], haveAssociatedBuild : true],
+                    3 : [_class : 'class hudson.model.Cause$UpstreamCause', associatedCauses : [], haveAssociatedBuild : true ]
 
   CauseUtils(def script, def buildObj) {
     this.script = script;
@@ -30,26 +30,33 @@ class CauseUtils {
   }
 
   @NonCPS
-  def _getBuildCausesFromBuildObj(def buildObj, def filter) {
-    /* cause tree 
-
-    [1]every build have associated causes
-    [2] not every build have  
-    */
+  def _getBuildCausesFromBuildObj(def buildObj, def filter, def causeList, def currentLevel) {
 
     for(Action a : this._getCauseActionFromBuildObj()) {
       for(Cause c : a.getCauses()) {
         def causeDetails = [
           __causeClass : c.getClass(),
           __buildExternalizableId : __currentLevelbuildObj.getExternalizableId()
-          ShortDescription : c.getShortDescription(),
-          _primary : null,
+          _primary : [:],
           _secondary : [:],
-          
+          __level : currentLevel,
+          _childs : []
         ];
+        causeDetails['_primary']['ShortDescription'] = c.getShortDescription;
+        if(causeDetails["__causeClass"] == this.causeTypes["0"]["_class"]) {
+          
+        }
+        
         
       }
     }
+    
+  }
+
+  def getBuildCauses(def filter) {
+    def causeList = []; // a list of map
+    int initialLevel = 0;
+    _getBuildCausesFromBuildObj(this.buildObj, filter, causeList, initialLevel);
     
   }
   
