@@ -23,6 +23,16 @@ class CauseUtils {
   }
 
   @NonCPS
+  def __getCauseTypeMetaInfo(def causeClass) {
+    this.causeTypes.each {
+      if(it.value['_class'] == causeClass) {
+        return it.value
+      }
+    }
+    
+  }
+
+  @NonCPS
   def _getCauseActionsFromBuildObj(def buildObj) {
       def causeActions = buildObj.getActions(CauseAction.class);
       GenUtils.jenkinsPrint(this.script," Cause actions object: ${causeActions} of build object: ${builfObj}",4);
@@ -43,6 +53,7 @@ class CauseUtils {
           _childs : []
         ];
         causeDetails['_primary']['ShortDescription'] = c.getShortDescription;
+        def causeTypeMetaInfo = __getCauseTypeMetaInfo(causeDetails["__causeClass"])
         if(causeDetails["__causeClass"] == this.causeTypes["0"]["_class"]) {
           
         }
