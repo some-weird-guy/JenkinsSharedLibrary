@@ -12,11 +12,28 @@ import hudson.triggers.TimerTrigger.TimerTriggerCause
 class CauseUtils {
   
   def buildObj;
-  def causeTypes = [0 : [_class : 'class hudson.model.Cause$UserIdCause', associatedCauses : [], haveAssociatedBuild : false],
-                    1 : [_class : 'class com.sonyericsson.rebuild.RebuildCause', associatedCauses : [0], haveAssociatedBuild : true],
-                    2 : [_class : 'class org.jenkinsci.plugins.workflow.cps.replay.ReplayCause', associatedCauses : [0], haveAssociatedBuild : true],
-                    3 : [_class : 'class hudson.model.Cause$UpstreamCause', associatedCauses : [], haveAssociatedBuild : true ]
-                   ];
+  def causeTypes = [
+    0 : [
+      _class : 'class hudson.model.Cause$UserIdCause',
+      associatedCauses : [],
+      haveAssociatedBuild : false
+    ],
+    1 : [
+      _class : 'class com.sonyericsson.rebuild.RebuildCause',
+      associatedCauses : [0],
+      haveAssociatedBuild : true
+    ],
+    2 : [
+      _class : 'class org.jenkinsci.plugins.workflow.cps.replay.ReplayCause',
+      associatedCauses : [0],
+      haveAssociatedBuild : true
+    ],
+    3 : [
+      _class : 'class hudson.model.Cause$UpstreamCause',
+      associatedCauses : [],
+      haveAssociatedBuild : true
+    ]
+  ];
   
   CauseUtils(def script, def buildObj) {
     this.script = script;
@@ -27,10 +44,13 @@ class CauseUtils {
   def __getCauseTypeMetaInfo(def causeClass) {
     this.causeTypes.each {
       if(it.value['_class'] == causeClass) {
-        return it.value
+        return [it.key, it.value];
       }
     } 
   }
+
+  @NonCPS
+  def __
 
   @NonCPS
   def _getCauseActionsFromBuildObj(def buildObj) {
@@ -43,7 +63,8 @@ class CauseUtils {
   def _getBuildCausesFromBuildObj(def buildObj, def filter, def causeList, def currentLevel) {
 
     def __currentLevelBuildObj = buildObj;
-     
+    def __nextLevelBuildObj = null;
+    
     for(Action a : this._getCauseActionFromBuildObj()) {
       for(Cause c : a.getCauses()) {
         def causeDetails = [
@@ -56,28 +77,76 @@ class CauseUtils {
           _childs : []
         ];
         def causeTypeMetaInfo = __getCauseTypeMetaInfo(causeDetails["__causeClass"]);
-        if(causeTypeMetaInfo["_class"] == this.causeTypes["0"]["_class"]) {
-          causeDetails['_primary'] = [
-            UpStreamProject : c.getUpstreamProject(),
-            UpstreamBuild : c.getUpstreamBuild(),
-            UpSreamUrl : c.getUpstreamUrl()
-          ];
-          causeList.add(causeDetails);
-          if()
-          
-        }
-        
-        
+        if(filter['allowedCauseTypes'].contains(causeTypeMetaInfo[0])) {
+          if(causeTypeMetaInfo[1]["_class"] == this.causeTypes["1"]["_class"]) {
+            /* Rebuild Cause
+            [1] A cause specifying that the build was a rebuild of another build.
+            [2] by its plugin we can rebuild a parametrized build without entering the parameters again
+            [3] this cause extends UpstreamCause; that is why control statement of this cause is checked before Upstream cause
+            */
+            causeDetails['_primary'] = [
+              UpStreamProject : c.getUpstreamProject(),
+              UpstreamBuild : c.getUpstreamBuild(),
+              UpSreamUrl : c.getUpstreamUrl()
+            ];
+            causeList.add(causeDetails);
+            if(currentLevel+1 <= filter['maxLevel']){
+              __nextLevelbuildObj = c.getUpstreamRun();
+              this._getAllCauses(__nextLevelbuildObj, filter, causeDetails['_childs'], currentLevel+1);
+            }
+          }
+          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes["3"]["_class"]) {
+            /* UpstreamCause
+            */
+            causeDetails['_primary'] = [
+              UpStreamProject : c.getUpstreamProject(),
+              UpstreamBuild : c.getUpstreamBuild(),
+              UpSreamUrl : c.getUpstreamUrl()
+            ];
+            causeList.add(causeDetails);
+            if(currentLevel+1 <= filter['maxLevel']){
+              __nextLevelbuildObj = c.getUpstreamRun();
+              this._getAllCauses(__nextLevelbuildObj, filter, causeDetails['_childs'], currentLevel+1);
+            }
+          }
+          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes["2"]["_class"]) {
+            /*Replay Cause
+            by this plugin we can replay a pipeline build with a modified script
+            */
+            causeDetails['_primary'] = [
+              OriginalNumber : c.getOriginalNumber();  
+            ];
+            causeList.add(causeDetails);
+            if(currentLevel+1 <= filter['maxLevel']){
+              __nextLevelbuildObj = c.getOriginal();
+              this._getAllCauses(__nextLevelbuildObj, filter, causeDetails['_childs'], currentLevel+1);
+            }
+          }
+          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes["0"]["_class"]) {
+            /*UserId Cuase
+            */
+            causeDetails["_primary"] = [
+              UserId : c.getUserId(),
+              UserName : c.getUserName(),
+              UserUrl : c.getUserUrl()
+            ];
+            causeList.add(causeDetails);
+          }  
+       }
       }
-    }
-    
-  }
+     } 
+   }
 
   def getBuildCauses(def filter) {
     def causeList = []; // a list of map
     int initialLevel = 0;
+    def defaultFilter = [
+      maxLevel : 999,
+      allowedCauseTypes : [0,1,2,3]
+    ];
+    filter = defaultFilter;
     _getBuildCausesFromBuildObj(this.buildObj, filter, causeList, initialLevel);
-    
+    return causeList;
   }
   
   
