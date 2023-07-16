@@ -8,6 +8,8 @@ import hudson.model.Cause.UpstreamCause
 import hudson.triggers.SCMTrigger.SCMTriggerCause
 import hudson.triggers.TimerTrigger.TimerTriggerCause
 
+import utils.GenUtils
+
 
 
 
