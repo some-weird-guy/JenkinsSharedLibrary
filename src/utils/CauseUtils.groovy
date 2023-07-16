@@ -80,15 +80,8 @@ class CauseUtils {
           _childs : []
         ];
         def causeTypeMetaInfo = __getCauseTypeMetaInfo(causeDetails["__causeClass"]);
-        GenUtils.jenkinsPrint(this.script,"${causeTypeMetaInfo}",4);
         if(filter['allowedCauseTypes'].contains(causeTypeMetaInfo[0])) {
-          GenUtils.jenkinsPrint(this.script,"1${causeTypeMetaInfo[1]}",4);
-          GenUtils.jenkinsPrint(this.script,"2${causeTypeMetaInfo[1]["_class"]}",4);
-          GenUtils.jenkinsPrint(this.script,"3${this.causeTypes}",4);
-          GenUtils.jenkinsPrint(this.script,"3-1${(this.causeTypes)["1"]}",4);
-          GenUtils.jenkinsPrint(this.script,"4${this.causeTypes["1"]}",4);
-          GenUtils.jenkinsPrint(this.script,"5${this.causeTypes["1"]["_class"]}",4);
-          if(causeTypeMetaInfo[1]['_class'] == this.causeTypes["1"]["_class"]) {
+          if(causeTypeMetaInfo[1]['_class'] == this.causeTypes[1]["_class"]) {
             /* Rebuild Cause
             [1] A cause specifying that the build was a rebuild of another build.
             [2] by its plugin we can rebuild a parametrized build without entering the parameters again
@@ -105,7 +98,7 @@ class CauseUtils {
               this._getAllCauses(__nextLevelbuildObj, filter, causeDetails['_childs'], currentLevel+1);
             }
           }
-          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes["3"]["_class"]) {
+          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes[3]["_class"]) {
             /* UpstreamCause
             */
             causeDetails['_primary'] = [
@@ -119,7 +112,7 @@ class CauseUtils {
               this._getAllCauses(__nextLevelbuildObj, filter, causeDetails['_childs'], currentLevel+1);
             }
           }
-          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes["2"]["_class"]) {
+          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes[2]["_class"]) {
             /*Replay Cause
             by this plugin we can replay a pipeline build with a modified script
             */
@@ -132,7 +125,7 @@ class CauseUtils {
               this._getAllCauses(__nextLevelbuildObj, filter, causeDetails['_childs'], currentLevel+1);
             }
           }
-          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes["0"]["_class"]) {
+          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes[0]["_class"]) {
             /*UserId Cuase
             */
             causeDetails["_primary"] = [
