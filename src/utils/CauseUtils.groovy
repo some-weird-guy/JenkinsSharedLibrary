@@ -37,10 +37,19 @@ class CauseUtils {
       _class : 'class hudson.model.Cause$UpstreamCause',
       associatedCauses : [],
       haveAssociatedBuild : true
-    ]
+    ],
+    4 : [
+      _class : 'class hudson.triggers.TimerTrigger$TimerTriggerCause',
+      associatedCauses : [],
+      haveAssociatedBuild : false
+    ],
+    5 : [
+      _class : 'class hudson.triggers.SCMTrigger$SCMTriggerCause',
+      associatedCauses : [],
+      haveAssociatedBuild : false
+    ]  
   ];
 
-  
   
   CauseUtils(def script, def buildObj) {
     this.script = script;
@@ -48,7 +57,6 @@ class CauseUtils {
   }
 
   
-
   @NonCPS
   def __getCauseTypeMetaInfo(def causeClass) {
     for(causeType in this.causeTypes) {
@@ -138,7 +146,22 @@ class CauseUtils {
               UserUrl : c.getUserUrl()
             ];
             causeList.add(causeDetails);
-          }  
+          }
+          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes[4]["_class"]) {
+            /*TimerTrigger Cause
+            */
+            causeList.add(causeDetails);
+          }
+          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes[5]["_class"]) {
+            /*SCMTrigger Cause
+            */
+            causeList.add(causeDetails);
+          }
+          else {
+            /*
+            */
+            causeList.add(causeDetails);
+          }
         }
        }
       } 
