@@ -65,7 +65,7 @@ class CauseUtils {
     def __currentLevelBuildObj = buildObj;
     def __nextLevelBuildObj = null;
     
-    for(Action a : this._getCauseActionFromBuildObj(__currentLevelBuildObj)) {
+    for(Action a : this._getCauseActionsFromBuildObj(__currentLevelBuildObj)) {
       for(Cause c : a.getCauses()) {
         def causeDetails = [
           __causeClass : c.getClass(),
