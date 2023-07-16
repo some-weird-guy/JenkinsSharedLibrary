@@ -92,6 +92,7 @@ class CauseUtils {
           _childs : []
         ];
         def causeTypeMetaInfo = __getCauseTypeMetaInfo(causeDetails["__causeClass"]);
+        causeDetails[__causeTypeIndex] = causeTypeMetaInfo[0];
         if(filter['allowedCauseTypes'].contains(causeTypeMetaInfo[0])) {
           if(causeTypeMetaInfo[1]['_class'] == this.causeTypes[1]["_class"]) {
             /* Rebuild Cause
