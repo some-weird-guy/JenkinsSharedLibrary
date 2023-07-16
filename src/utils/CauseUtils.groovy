@@ -173,7 +173,7 @@ class CauseUtils {
     int initialLevel = 0;
     def defaultFilter = [
       maxLevel : 999,
-      allowedCauseTypes : [0,1,2,3]
+      allowedCauseTypes : [0,1,2,3,4,5]
     ];
     filter = defaultFilter;
     _getBuildCausesFromBuildObj(this.buildObj, filter, causeList, initialLevel);
