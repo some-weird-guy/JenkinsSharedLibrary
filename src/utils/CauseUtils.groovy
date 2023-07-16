@@ -66,7 +66,7 @@ class CauseUtils {
       for(Cause c : a.getCauses()) {
         def causeDetails = [
           __causeClass : c.getClass(),
-          __buildExternalizableId : __currentLevelBuildObj.getExternalizableId()
+          __buildExternalizableId : __currentLevelBuildObj.getExternalizableId(),
           _primary : null,
           _secondary : null,
           __level : currentLevel,
