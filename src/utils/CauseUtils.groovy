@@ -82,7 +82,10 @@ class CauseUtils {
         def causeTypeMetaInfo = __getCauseTypeMetaInfo(causeDetails["__causeClass"]);
         GenUtils.jenkinsPrint(this.script,"${causeTypeMetaInfo}",4);
         if(filter['allowedCauseTypes'].contains(causeTypeMetaInfo[0])) {
-          if(causeTypeMetaInfo[1]["_class"] == this.causeTypes["1"]["_class"]) {
+          GenUtils.jenkinsPrint(this.script,"${causeTypeMetaInfo[1]}",4);
+          GenUtils.jenkinsPrint(this.script,"${causeTypeMetaInfo[1]["_class"]}",4);
+          GenUtils.jenkinsPrint(this.script,"${this.causeTypes["1"]["_class"]}",4);
+          if(causeTypeMetaInfo[1]['_class'] == this.causeTypes["1"]["_class"]) {
             /* Rebuild Cause
             [1] A cause specifying that the build was a rebuild of another build.
             [2] by its plugin we can rebuild a parametrized build without entering the parameters again
