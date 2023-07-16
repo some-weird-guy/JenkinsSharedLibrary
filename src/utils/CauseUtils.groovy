@@ -50,9 +50,6 @@ class CauseUtils {
   }
 
   @NonCPS
-  def __
-
-  @NonCPS
   def _getCauseActionsFromBuildObj(def buildObj) {
       def causeActions = buildObj.getActions(CauseAction.class);
       GenUtils.jenkinsPrint(this.script," Cause actions object: ${causeActions} of build object: ${builfObj}",4);
