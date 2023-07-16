@@ -47,9 +47,9 @@ class CauseUtils {
 
   @NonCPS
   def __getCauseTypeMetaInfo(def causeClass) {
-    this.causeTypes.each {
-      if(it.value['_class'] == causeClass) {
-        return [it.key, it.value];
+    for(causeType in this.causeTypes) {
+      if(causeType.value['_class'] == causeClass) {
+        return [causeType.ket, causeType.value];
       }
     } 
   }
