@@ -12,6 +12,7 @@ import hudson.triggers.TimerTrigger.TimerTriggerCause
 class CauseUtils {
   
   def buildObj;
+  def script;
   def causeTypes = [
     0 : [
       _class : 'class hudson.model.Cause$UserIdCause',
