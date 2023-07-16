@@ -1,3 +1,5 @@
+import hudson.model.CauseAction
+import hudson.model.Action
 import hudson.model.Cause
 import hudson.model.Cause.UserIdCause
 import com.sonyericsson.rebuild.RebuildCause
