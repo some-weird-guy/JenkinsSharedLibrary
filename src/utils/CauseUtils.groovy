@@ -135,6 +135,7 @@ class CauseUtils {
       } 
      }
 
+  @NonCPS
   def getBuildCauses(def filter) {
     def causeList = []; // a list of map
     int initialLevel = 0;
