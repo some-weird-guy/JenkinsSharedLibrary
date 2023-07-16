@@ -94,7 +94,7 @@ class CauseUtils {
             ];
             causeList.add(causeDetails);
             if(currentLevel+1 <= filter['maxLevel']){
-              __nextLevelbuildObj = c.getUpstreamRun();
+              __nextLevelBuildObj = c.getUpstreamRun();
               this._getAllCauses(__nextLevelbuildObj, filter, causeDetails['_childs'], currentLevel+1);
             }
           }
@@ -108,7 +108,7 @@ class CauseUtils {
             ];
             causeList.add(causeDetails);
             if(currentLevel+1 <= filter['maxLevel']){
-              __nextLevelbuildObj = c.getUpstreamRun();
+              __nextLevelBuildObj = c.getUpstreamRun();
               this._getAllCauses(__nextLevelbuildObj, filter, causeDetails['_childs'], currentLevel+1);
             }
           }
@@ -121,7 +121,7 @@ class CauseUtils {
             ];
             causeList.add(causeDetails);
             if(currentLevel+1 <= filter['maxLevel']){
-              __nextLevelbuildObj = c.getOriginal();
+              __nextLevelBuildObj = c.getOriginal();
               this._getAllCauses(__nextLevelbuildObj, filter, causeDetails['_childs'], currentLevel+1);
             }
           }
