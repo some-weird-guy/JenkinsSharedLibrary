@@ -82,9 +82,12 @@ class CauseUtils {
         def causeTypeMetaInfo = __getCauseTypeMetaInfo(causeDetails["__causeClass"]);
         GenUtils.jenkinsPrint(this.script,"${causeTypeMetaInfo}",4);
         if(filter['allowedCauseTypes'].contains(causeTypeMetaInfo[0])) {
-          GenUtils.jenkinsPrint(this.script,"${causeTypeMetaInfo[1]}",4);
-          GenUtils.jenkinsPrint(this.script,"${causeTypeMetaInfo[1]["_class"]}",4);
-          GenUtils.jenkinsPrint(this.script,"${this.causeTypes["1"]["_class"]}",4);
+          GenUtils.jenkinsPrint(this.script,"1${causeTypeMetaInfo[1]}",4);
+          GenUtils.jenkinsPrint(this.script,"2${causeTypeMetaInfo[1]["_class"]}",4);
+          GenUtils.jenkinsPrint(this.script,"3${this.causeTypes}",4);
+          GenUtils.jenkinsPrint(this.script,"3-1${(this.causeTypes)["1"]}",4);
+          GenUtils.jenkinsPrint(this.script,"4${this.causeTypes["1"]}",4);
+          GenUtils.jenkinsPrint(this.script,"5${this.causeTypes["1"]["_class"]}",4);
           if(causeTypeMetaInfo[1]['_class'] == this.causeTypes["1"]["_class"]) {
             /* Rebuild Cause
             [1] A cause specifying that the build was a rebuild of another build.
