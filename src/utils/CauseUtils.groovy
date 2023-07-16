@@ -39,11 +39,15 @@ class CauseUtils {
       haveAssociatedBuild : true
     ]
   ];
+
+  
   
   CauseUtils(def script, def buildObj) {
     this.script = script;
     this.buildObj = buildObj;
   }
+
+  
 
   @NonCPS
   def __getCauseTypeMetaInfo(def causeClass) {
@@ -95,7 +99,7 @@ class CauseUtils {
             causeList.add(causeDetails);
             if(currentLevel+1 <= filter['maxLevel']){
               __nextLevelBuildObj = c.getUpstreamRun();
-              this._getAllCauses(__nextLevelBuildObj, filter, causeDetails['_childs'], currentLevel+1);
+              this._getBuildCausesFromBuildObj(__nextLevelBuildObj, filter, causeDetails['_childs'], currentLevel+1);
             }
           }
           else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes[3]["_class"]) {
@@ -109,7 +113,7 @@ class CauseUtils {
             causeList.add(causeDetails);
             if(currentLevel+1 <= filter['maxLevel']){
               __nextLevelBuildObj = c.getUpstreamRun();
-              this._getAllCauses(__nextLevelBuildObj, filter, causeDetails['_childs'], currentLevel+1);
+              this._getBuildCausesFromBuildObj(__nextLevelBuildObj, filter, causeDetails['_childs'], currentLevel+1);
             }
           }
           else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes[2]["_class"]) {
@@ -122,7 +126,7 @@ class CauseUtils {
             causeList.add(causeDetails);
             if(currentLevel+1 <= filter['maxLevel']){
               __nextLevelBuildObj = c.getOriginal();
-              this._getAllCauses(__nextLevelBuildObj, filter, causeDetails['_childs'], currentLevel+1);
+              this._getBuildCausesFromBuildObj(__nextLevelBuildObj, filter, causeDetails['_childs'], currentLevel+1);
             }
           }
           else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes[0]["_class"]) {
