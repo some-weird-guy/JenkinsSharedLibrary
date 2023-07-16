@@ -49,7 +49,7 @@ class CauseUtils {
   def __getCauseTypeMetaInfo(def causeClass) {
     for(causeType in this.causeTypes) {
       if(causeType.value['_class'] == causeClass.toString()) {
-        return [causeType.ket, causeType.value];
+        return [causeType.key, causeType.value];
       }
     } 
   }
