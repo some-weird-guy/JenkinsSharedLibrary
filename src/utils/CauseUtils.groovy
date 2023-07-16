@@ -111,7 +111,7 @@ class CauseUtils {
             by this plugin we can replay a pipeline build with a modified script
             */
             causeDetails['_primary'] = [
-              OriginalNumber : c.getOriginalNumber();  
+              OriginalNumber : c.getOriginalNumber()
             ];
             causeList.add(causeDetails);
             if(currentLevel+1 <= filter['maxLevel']){
@@ -129,10 +129,10 @@ class CauseUtils {
             ];
             causeList.add(causeDetails);
           }  
+        }
        }
-      }
-     } 
-   }
+      } 
+     }
 
   def getBuildCauses(def filter) {
     def causeList = []; // a list of map
