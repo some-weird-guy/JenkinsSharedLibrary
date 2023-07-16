@@ -78,7 +78,9 @@ class CauseUtils {
           ShortDescription : c.getShortDescription(),
           _childs : []
         ];
+        GenUtils.jenkinsPrint(this.script,"${causeDetails}")
         def causeTypeMetaInfo = __getCauseTypeMetaInfo(causeDetails["__causeClass"]);
+        GenUtils.jenkinsPrint(this.script,"${causeTypeMetaInfo}")
         if(filter['allowedCauseTypes'].contains(causeTypeMetaInfo[0])) {
           if(causeTypeMetaInfo[1]["_class"] == this.causeTypes["1"]["_class"]) {
             /* Rebuild Cause
