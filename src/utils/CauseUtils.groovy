@@ -48,6 +48,7 @@ class CauseUtils {
   @NonCPS
   def __getCauseTypeMetaInfo(def causeClass) {
     for(causeType in this.causeTypes) {
+      GenUtils.jenkinsPrint(this.script,"${causeType}",4);
       if(causeType.value['_class'] == causeClass.toString()) {
         return [causeType.key, causeType.value];
       }
@@ -79,6 +80,7 @@ class CauseUtils {
           _childs : []
         ];
         def causeTypeMetaInfo = __getCauseTypeMetaInfo(causeDetails["__causeClass"]);
+        GenUtils.jenkinsPrint(this.script,"${causeTypeMetaInfo}",4);
         if(filter['allowedCauseTypes'].contains(causeTypeMetaInfo[0])) {
           if(causeTypeMetaInfo[1]["_class"] == this.causeTypes["1"]["_class"]) {
             /* Rebuild Cause
