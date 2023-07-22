@@ -57,6 +57,13 @@ class CauseUtils {
     this.buildObj = buildObj;
   }
 
+  CauseUtils(def script) {
+    this.script = script;
+    // TO DO : Think about more better and optimized solution
+    Utils u = new Utils(this.script);
+    this.buildObj = u._getCurrentBuildObj();
+  }
+
   
   @NonCPS
   def __getCauseTypeMetaInfo(def causeClass) {
