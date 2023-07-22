@@ -3,7 +3,7 @@ package utils
 import hudson.tasks.Mailer
 import hudson.model.User
 
-class UserUtils { // singleton design paatern with Lazy Initilalization 
+class UserUtils { // singleton design pattern with Lazy Initilalization 
 
   private static UserUtils instance;
   private UserUtils() {
