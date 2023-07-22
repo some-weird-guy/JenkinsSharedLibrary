@@ -1,9 +1,7 @@
 package utils
 
 import jenkins.model.Jenkins; // it is a singleton class
-import hudson.tasks.Mailer
-import hudson.model.User
-//-------------------------------
+
 import utils.GenUtils
 
 class Utils {
@@ -56,26 +54,4 @@ class Utils {
         // return this.currentBuild.rawBuild()
         return this._getAllBuildsFromJob(this.currentJobObj)[0];
     }
-    
-    //----------------------------Mail Handling-------------------------------------
-    @NonCPS
-    public def _getUsermailFromUserId(String userId) {
-        def userObj = _getUserObjFromUserId(userId);
-        def mailUserPropertyObj = userObj.getProperty(Mailer.UserProperty.class);
-        if(mailUserPropertyObj.hasExplicitlyConfiguredAddress()){
-            return mailUserPropertyObj.getExplicitlyConfiguredAddress();
-        }
-        else{
-            return mailUserPropertyObj.getAddress();
-        }
-        
-    }
-    //----------------------------User Handling-------------------------------------
-    @NonCPS
-    public def _getUserObjFromUserId(String userId) {
-        return User.get(userId)
-    }
-
-
-
 }
