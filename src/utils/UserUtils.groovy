@@ -1,4 +1,4 @@
-
+package utils
 
 import hudson.tasks.Mailer
 import hudson.model.User
