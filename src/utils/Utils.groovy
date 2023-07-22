@@ -14,41 +14,41 @@ class Utils {
 
     Utils(script) {
         this.script = script
-        this.jenkins = this._getJenkins()
+        this.jenkins = this.__getJenkins()
         this.currentJobName = this._getCurrentJobName()
         this.currentJobObj = this._getCurrentJobObj()
         this.currentBuildObj = this._getCurrentBuildObj()
     }
 
+    //-----------------------------------------------------------------------------------
     @NonCPS
-    public def _getJenkins() {
+    public def __getJenkins() {
         def jenkins =  Jenkins.getInstanceOrNull()
         GenUtils.jenkinsPrint(this.script,"Jenkins singleton object: ${jenkins}",4)
         return jenkins
     }
-
+    
+    @NonCPS
+    public def __getItemByName(String name) {
+        return this.jenkins.getItem(name)
+    }
+    //-----------------------------------------------------------------------------------
+    @NonCPS
+    public def _getAllBuildsFromJob(def jobObj) {
+        return jobObj.getBuilds()
+    }
+    //-----------------------------------------------------------------------------------
     @NonCPS
     public String _getCurrentJobName() {
         def currentJobName = this.script.env.getProperty('JOB_NAME')
         GenUtils.jenkinsPrint(this.script,"Current job name: ${currentJobName}",4)
         return currentJobName
     }
-
-    @NonCPS
-    public def _getItemByName(String name) {
-        return this.jenkins.getItem(name)
-    }
-
-    @NonCPS
-    public def _getAllBuildsFromJob(def jobObj) {
-        return jobObj.getBuilds()
-    }
-
+    
     @NonCPS
     public def _getCurrentJobObj() {
-        return this._getItemByName(this.currentJobName)
+        return this.__getItemByName(this.currentJobName)
     }
-
 
     @NonCPS
     public def _getCurrentBuildObj() {
