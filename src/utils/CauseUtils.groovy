@@ -1,3 +1,5 @@
+package utils;
+
 import hudson.model.CauseAction
 import hudson.model.Action
 import hudson.model.Cause
@@ -9,9 +11,8 @@ import hudson.triggers.SCMTrigger.SCMTriggerCause
 import hudson.triggers.TimerTrigger.TimerTriggerCause
 
 import utils.GenUtils
-
-
-
+import utils.UserUtils
+import utils.Utils
 
 class CauseUtils {
   
@@ -145,6 +146,9 @@ class CauseUtils {
               UserId : c.getUserId(),
               UserName : c.getUserName(),
               UserUrl : c.getUserUrl()
+            ];
+            causeDetails["_secondary"] = [
+              UserMail : UserUtils.getInstance()._getUsermailFromUserId(c.getUserId()),
             ];
             causeList.add(causeDetails);
           }
