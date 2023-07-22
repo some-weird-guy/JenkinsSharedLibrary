@@ -6,8 +6,7 @@ import hudson.model.User
 class UserUtils { // singleton design pattern with Lazy Initilalization 
 
   private static UserUtils instance;
-  private UserUtils() {
-    
+  private UserUtils() { 
   }
   @NonCPS
   public static UserUtils getInstance() {
