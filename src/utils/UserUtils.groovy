@@ -3,13 +3,20 @@ package utils
 import hudson.tasks.Mailer
 import hudson.model.User
 
-class UserUtils {
+class UserUtils { // singleton design paatern with Lazy Initilalization 
 
-
-  UserUtils() {
+  private static UserUtils instance;
+  private UserUtils() {
     
   }
+  public static UserUtils getInstance() {
+    if (instance == null) {
+      instance = new UserUtils();
+    }
+    return instance;
+  }
 
+  
   @NonCPS
   public def _getUsermailFromUserId(String userId) {
     def userObj = __getUserObjFromUserId(userId);
