@@ -40,14 +40,15 @@ class Utils {
     }
 
     @NonCPS
+    public def _getAllBuildsFromJob(def jobObj) {
+        return jobObj.getBuilds()
+    }
+
+    @NonCPS
     public def _getCurrentJobObj() {
         return this._getItemByName(this.currentJobName)
     }
 
-    @NonCPS
-    public def _getAllBuildsFromJob(def jobObj) {
-        return jobObj.getBuilds()
-    }
 
     @NonCPS
     public def _getCurrentBuildObj() {
