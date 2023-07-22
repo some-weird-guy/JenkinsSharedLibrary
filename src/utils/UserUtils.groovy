@@ -9,6 +9,7 @@ class UserUtils { // singleton design pattern with Lazy Initilalization
   private UserUtils() {
     
   }
+  @NonCPS
   public static UserUtils getInstance() {
     if (instance == null) {
       instance = new UserUtils();
