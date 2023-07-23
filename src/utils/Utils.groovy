@@ -55,4 +55,18 @@ class Utils {
         // return this.currentBuild.rawBuild()
         return this._getAllBuildsFromJob(this.currentJobObj)[0];
     }
+    //-----------------------------------------------------------------------------------
+    @NonCPS
+    public void _getBuildMetaInfoFromBuildObj(def buildObj) {
+        // buildObj : hudson.model.Run
+
+        def buildMetaInfo = [
+            displayName : buildObj.getDisplayName(),
+            fullDisplayName : buildObj.getFullDisplayName(),
+            id : buildObj.getId(),
+            number : buildObj.getNumber()
+            externalizableId : buildObj.getExternalizableId  // static Run<?,?> fromExternalizableId​(String id)
+        ];    
+    }
+    
 }
