@@ -65,7 +65,7 @@ class Utils {
             fullDisplayName : buildObj.getFullDisplayName(),
             id : buildObj.getId(),
             number : buildObj.getNumber(),
-            externalizableId : buildObj.getExternalizableId()  // to get build from externalizableId use this method : static Run<?,?> fromExternalizableId​(String id)
+            externalizableId : buildObj.getExternalizableId()  // to  get build from externalizableId use this method : static Run<?,?> fromExternalizableId​(String id)
         ];    
     }
     
