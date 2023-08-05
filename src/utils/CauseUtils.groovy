@@ -20,6 +20,12 @@ class CauseUtils {
   def buildObj;
   def script;
   def causeTypes = [
+    -1 : [
+      _class : 'class unknown',
+      associatedCauses : [],
+      haveAssociatedBuild : false,
+      extendCause : null
+    ],
     0 : [
       _class : 'class hudson.model.Cause$UserIdCause',
       associatedCauses : [],
@@ -86,7 +92,9 @@ class CauseUtils {
       if(causeType.value['_class'] == causeClass.toString()) {
         return [causeType.key, causeType.value];
       }
-    } 
+    }
+    // An unknown cause type
+    return [-1, 'class unknown']
   }
 
   @NonCPS
@@ -188,6 +196,11 @@ class CauseUtils {
             */
             causeList.add(causeDetails);
           }
+          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes[-1]["_class"]) {
+            /*unknown Cause
+            */
+            causeList.add(causeDetails);
+          }
           else {
             /*
             */
@@ -204,7 +217,7 @@ class CauseUtils {
     int initialLevel = 0;
     def defaultFilter = [
       maxLevel : 999,
-      allowedCauseTypes : [0,1,2,3,4,5,6]
+      allowedCauseTypes : [-1,0,1,2,3,4,5,6]
     ];
     filter = defaultFilter;
     _getBuildCausesFromBuildObj(this.buildObj, filter, causeList, initialLevel);
