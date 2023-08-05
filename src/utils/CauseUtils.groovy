@@ -9,6 +9,7 @@ import org.jenkinsci.plugins.workflow.cps.replay.ReplayCause
 import hudson.model.Cause.UpstreamCause
 import hudson.triggers.SCMTrigger.SCMTriggerCause
 import hudson.triggers.TimerTrigger.TimerTriggerCause
+import com.cloudbees.jenkins.GitHubPushCause
 
 import utils.GenUtils
 import utils.UserUtils
@@ -22,33 +23,46 @@ class CauseUtils {
     0 : [
       _class : 'class hudson.model.Cause$UserIdCause',
       associatedCauses : [],
-      haveAssociatedBuild : false
+      haveAssociatedBuild : false,
+      extendCause : null
     ],
     1 : [
       _class : 'class com.sonyericsson.rebuild.RebuildCause',
       associatedCauses : [0],
-      haveAssociatedBuild : true
+      haveAssociatedBuild : true,
+      extendCause : 3
     ],
     2 : [
       _class : 'class org.jenkinsci.plugins.workflow.cps.replay.ReplayCause',
       associatedCauses : [0],
-      haveAssociatedBuild : true
+      haveAssociatedBuild : true,
+      extendCause : null
     ],
     3 : [
       _class : 'class hudson.model.Cause$UpstreamCause',
       associatedCauses : [],
-      haveAssociatedBuild : true
+      haveAssociatedBuild : true,
+      extendCause : null
     ],
     4 : [
       _class : 'class hudson.triggers.TimerTrigger$TimerTriggerCause',
       associatedCauses : [],
-      haveAssociatedBuild : false
+      haveAssociatedBuild : false,
+      extendCause : null
     ],
     5 : [
       _class : 'class hudson.triggers.SCMTrigger$SCMTriggerCause',
       associatedCauses : [],
-      haveAssociatedBuild : false
-    ]  
+      haveAssociatedBuild : false,
+      extendCause : null
+    ],
+    6 : [
+      _class : 'class com.cloudbees.jenkins.GitHubPushCause',
+      associatedCauses : [],
+      haveAssociatedBuild : false,
+      extendCause : 5
+    ]
+    
   ];
 
   
@@ -169,6 +183,11 @@ class CauseUtils {
             */
             causeList.add(causeDetails);
           }
+          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes[6]["_class"]) {
+            /*GitHubPush Cause
+            */
+            causeList.add(causeDetails);
+          }
           else {
             /*
             */
@@ -185,7 +204,7 @@ class CauseUtils {
     int initialLevel = 0;
     def defaultFilter = [
       maxLevel : 999,
-      allowedCauseTypes : [0,1,2,3,4,5]
+      allowedCauseTypes : [0,1,2,3,4,5,6]
     ];
     filter = defaultFilter;
     _getBuildCausesFromBuildObj(this.buildObj, filter, causeList, initialLevel);
