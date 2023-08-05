@@ -20,7 +20,7 @@ class CauseUtils {
   def buildObj;
   def script;
   def causeTypes = [
-    -1 : [
+    (-1) : [
       _class : 'class unknown',
       associatedCauses : [],
       haveAssociatedBuild : false,
@@ -196,7 +196,7 @@ class CauseUtils {
             */
             causeList.add(causeDetails);
           }
-          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes[-1]["_class"]) {
+          else if(causeTypeMetaInfo[1]["_class"] == this.causeTypes[(-1)]["_class"]) {
             /*unknown Cause
             */
             causeList.add(causeDetails);
