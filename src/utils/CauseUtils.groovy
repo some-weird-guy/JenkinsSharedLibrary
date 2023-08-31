@@ -121,7 +121,9 @@ class CauseUtils {
           ShortDescription : c.getShortDescription(),
           _childs : []
         ];
+        GenUtils.jenkinsPrint(this.script,"${causeDetails}",4);
         def causeTypeMetaInfo = __getCauseTypeMetaInfo(causeDetails["__causeClass"]);
+        GenUtils.jenkinsPrint(this.script,"${causeTypeMetaInfo}",4);
         causeDetails["__causeTypeIndex"] = causeTypeMetaInfo[0];
         if(filter['allowedCauseTypes'].contains(causeTypeMetaInfo[0])) {
           if(causeTypeMetaInfo[1]['_class'] == this.causeTypes[1]["_class"]) {
